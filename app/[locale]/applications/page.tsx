@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 
-import { ApplicationsIndexNav } from "@/components/applications-index-nav";
 import { ApplicationImageRail } from "@/components/application-image-rail";
 import { FadeImage } from "@/components/fade-image";
 import { SubpageHero } from "@/components/subpage-hero";
@@ -42,20 +41,19 @@ export async function generateMetadata({
     locale,
     path: "/applications",
     title: isKo
-      ? "응용분야 | 신호텍 레이저·광학 솔루션"
-      : "Application | Shinhotek Laser and Optical Solutions",
+      ? "솔루션소개 | 신호텍 레이저·광학 솔루션"
+      : "Solution | Shinhotek Laser and Optical Solutions",
     description: isKo
-      ? "반도체, 디스플레이, 이차전지, 의료·바이오 등 산업 공정별 신호텍 광학 솔루션 적용 분야를 확인하세요."
-      : "Explore Shinhotek optical solution applications across semiconductor, display, secondary battery, medical, and bio processes.",
+      ? "광학 솔루션, 광학 설계, 기구 설계, SW 설계 등 신호텍의 공정 맞춤형 솔루션 구성을 확인하세요."
+      : "Explore Shinhotek solution capabilities across optical solutions, optical design, mechanical design, and software design.",
     keywords: [
-      "응용분야",
-      "Application",
-      "semiconductor laser process",
-      "VCSEL for Lidar",
-      "laser soldering",
-      "wafer annealing",
-      "AOI illumination",
-      "OLED display laser",
+      "솔루션소개",
+      "Solution",
+      "optical solution",
+      "optical design",
+      "mechanical design",
+      "software design",
+      "laser process engineering",
     ],
     image: "/subpage-applications-bg.png",
   });
@@ -72,19 +70,18 @@ export default async function ApplicationsPage({
     getPageHeroConfig("applications"),
     getApplications(),
   ]);
-  const applicationMap = new Map(applications.map((application) => [application.slug, application]));
-  const applicationEntries = defaultApplications.map((entry) => {
-    const source = applicationMap.get(entry.slug);
+  const applicationEntries = applications.length ? applications : defaultApplications;
+  const normalizedApplicationEntries = applicationEntries.map((entry) => {
     const englishCopy = applicationEnglishCopy[entry.slug];
     const koreanCopy = applicationKoreanCopy[entry.slug];
 
     return {
       slug: entry.slug,
-      titleKo: source?.titleKo ?? koreanCopy?.title ?? entry.titleKo,
-      titleEn: source?.titleEn ?? englishCopy?.title ?? entry.titleEn,
-      imageUrl: source?.imageUrl ?? entry.imageUrl ?? "",
-      bodyKo: source?.summaryKo ?? koreanCopy?.body ?? entry.summaryKo,
-      bodyEn: source?.summaryEn ?? englishCopy?.body ?? entry.summaryEn,
+      titleKo: entry.titleKo ?? koreanCopy?.title ?? "",
+      titleEn: entry.titleEn ?? englishCopy?.title ?? "",
+      imageUrl: entry.imageUrl ?? "",
+      bodyKo: entry.summaryKo ?? koreanCopy?.body ?? "",
+      bodyEn: entry.summaryEn ?? englishCopy?.body ?? "",
       galleryImages: applicationGalleryImages[entry.slug] ?? [],
     };
   });
@@ -92,7 +89,7 @@ export default async function ApplicationsPage({
   return (
     <div className="applicationsPage">
       <SubpageHero
-        eyebrow={locale === "ko" ? heroConfig?.eyebrowKo || "APPLICATION" : heroConfig?.eyebrowEn || "APPLICATION"}
+        eyebrow={locale === "ko" ? heroConfig?.eyebrowKo || "SOLUTION" : heroConfig?.eyebrowEn || "SOLUTION"}
         title={locale === "ko" ? heroConfig?.titleKo || dict.applications.title : heroConfig?.titleEn || dict.applications.title}
         description={locale === "ko" ? heroConfig?.descriptionKo || dict.applications.lead : heroConfig?.descriptionEn || dict.applications.lead}
         tone="applications"
@@ -103,7 +100,7 @@ export default async function ApplicationsPage({
 
       <div className="applicationsBody applicationsBodyShowcase">
         <div className="container applicationsShowcase">
-          {applicationEntries.map((entry) => {
+          {normalizedApplicationEntries.map((entry) => {
             const localizedTitle = locale === "ko" ? entry.titleKo : entry.titleEn;
             const localizedBody = locale === "ko" ? entry.bodyKo : entry.bodyEn;
 

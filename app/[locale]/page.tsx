@@ -3,7 +3,7 @@
 import { HomeSeriesOverview } from "@/components/home-series-overview";
 import { HomeSolutionSection } from "@/components/home-solution-section";
 import { Hero } from "@/components/hero";
-import { getProducts, getSiteConfig } from "@/lib/content";
+import { getApplications, getPageHeroConfig, getProducts, getSiteConfig } from "@/lib/content";
 import { getDictionary } from "@/lib/dictionaries";
 import { buildPageMetadata } from "@/lib/seo";
 import type { Locale } from "@/lib/site";
@@ -30,7 +30,12 @@ export default async function HomePage({
   params: Promise<{ locale: Locale }>;
 }) {
   const { locale } = await params;
-  const [config, products] = await Promise.all([getSiteConfig(), getProducts()]);
+  const [config, products, applications, contactHeroConfig] = await Promise.all([
+    getSiteConfig(),
+    getProducts(),
+    getApplications(),
+    getPageHeroConfig("contact"),
+  ]);
 
   return (
     <>
@@ -42,7 +47,14 @@ export default async function HomePage({
         products={products}
       />
 
-      <HomeSolutionSection locale={locale} />
+      <HomeSolutionSection
+        locale={locale}
+        title={locale === "ko" ? config?.storyTitleKo : config?.storyTitleEn}
+        lead={locale === "ko" ? config?.storyBodyKo : config?.storyBodyEn}
+        solutions={applications}
+        contactTitle={locale === "ko" ? contactHeroConfig?.titleKo : contactHeroConfig?.titleEn}
+        contactLead={locale === "ko" ? contactHeroConfig?.descriptionKo : contactHeroConfig?.descriptionEn}
+      />
     </>
   );
 }

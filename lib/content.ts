@@ -97,14 +97,37 @@ function normalizePageHeroLabel<T extends { pageKey: string; titleKo: string; ti
   config: T,
 ) {
   if (config.pageKey === "applications") {
-    return { ...config, titleKo: "응용분야", titleEn: "Application" };
+    return { ...config, titleKo: "솔루션소개", titleEn: "Solution" };
   }
 
   if (config.pageKey === "products") {
-    return { ...config, eyebrowKo: "제품", titleKo: "제품", titleEn: "Product" };
+    return { ...config, eyebrowKo: "제품", titleKo: "제품소개", titleEn: "Product" };
   }
 
   return config;
+}
+
+type PageHeroConfigLike = {
+  id: number;
+  pageKey: string;
+  eyebrowKo: string;
+  eyebrowEn: string;
+  titleKo: string;
+  titleEn: string;
+  descriptionKo: string;
+  descriptionEn: string;
+  backgroundImageUrl: string | null;
+  backgroundOpacity: number;
+  createdAt: Date;
+  updatedAt: Date;
+};
+
+function mergePageHeroConfigs(configs: PageHeroConfigLike[]) {
+  const configMap = new Map(configs.map((config) => [config.pageKey, config]));
+
+  return fallbackPageHeroConfigs.map((fallbackConfig) =>
+    normalizePageHeroLabel(configMap.get(fallbackConfig.pageKey) ?? fallbackConfig),
+  );
 }
 
 function logFallback(scope: string, error: unknown) {
@@ -133,10 +156,12 @@ export async function getSiteConfig() {
 
 export async function getApplications() {
   try {
-    return await prisma.application.findMany({
+    const applications = await prisma.application.findMany({
       where: { published: true },
       orderBy: { sortOrder: "asc" },
     });
+
+    return applications.length ? applications : fallbackApplications;
   } catch (error) {
     logFallback("applications", error);
     return fallbackApplications;
@@ -229,7 +254,7 @@ export async function getPageHeroConfigs() {
     const configs = await prisma.pageHeroConfig.findMany({
       orderBy: { pageKey: "asc" },
     });
-    return configs.map(normalizePageHeroLabel);
+    return mergePageHeroConfigs(configs);
   } catch (error) {
     logFallback("pageHeroConfigs", error);
     return fallbackPageHeroConfigs;

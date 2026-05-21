@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 
+import { DirectionsContent } from "@/components/directions-content";
 import { FadeImage } from "@/components/fade-image";
-import { getCompanyContent } from "@/lib/content";
+import { getCompanyContent, getDistributorDirectory, getPageHeroConfig } from "@/lib/content";
 import { buildPageMetadata } from "@/lib/seo";
 import type { Locale } from "@/lib/site";
 
@@ -52,7 +53,20 @@ export default async function CompanyPage({
   params: Promise<{ locale: Locale }>;
 }) {
   const { locale } = await params;
-  const companyContent = await getCompanyContent();
+  const isKo = locale === "ko";
+  const [companyContent, companyHeroConfig, distributorDirectory] = await Promise.all([
+    getCompanyContent(),
+    getPageHeroConfig("company"),
+    getDistributorDirectory(),
+  ]);
+  const partnerItems = distributorDirectory.regions.flatMap((region) =>
+    region.partners.map((partner) => ({
+      name: isKo ? partner.companyKo : partner.companyEn,
+      body: isKo ? partner.addressKo : partner.addressEn,
+      website: partner.website,
+    })),
+  );
+  const companyHeroImage = companyHeroConfig?.backgroundImageUrl || "/company/history-bg.png";
   const historyTitle = localizedField(companyContent, "historyTitle", locale);
   const historyBody = localizedField(companyContent, "historyBody", locale);
   const brandTitle = localizedField(companyContent, "brandTitle", locale);
@@ -73,7 +87,7 @@ export default async function CompanyPage({
       <section className="companyHeroBand">
         <div className="companyHeroMedia">
           <FadeImage
-            src="/company/history-bg.png"
+            src={companyHeroImage}
             alt="SHINHOTEK history background"
             fill
             priority
@@ -87,9 +101,13 @@ export default async function CompanyPage({
 
       <section className="companyHistorySection">
         <div className="container">
-          <div className="companyHistorySurface">
+          <div className="companyHistorySurface companyCeoSurface">
             <div className="companyHistoryHeading">
               <h1 className="companyHistoryTitle">{historyTitle}</h1>
+              <span className="companyHistoryKicker">
+                <span className="companyHistoryKickerMark" />
+                CEO MESSAGE
+              </span>
             </div>
             <div className="companyHistoryBody">
               {splitParagraphs(historyBody).map((paragraph, index) => (
@@ -121,6 +139,45 @@ export default async function CompanyPage({
               ))}
             </div>
           </div>
+        </div>
+      </section>
+
+      <section className="companyPartnerSection">
+        <div className="container">
+          <div className="companyPartnerSurface">
+            <div className="companyPartnerIntro">
+              <span className="eyebrow">PARTNERS</span>
+              <h2 className="sectionTitle">{isKo ? "파트너사 소개" : "Partner Network"}</h2>
+              <p className="sectionLead">
+                {isKo
+                  ? "신호텍은 레이저, 광학, 계측, 자동화 분야의 파트너 네트워크를 기반으로 고객 공정에 맞는 제품과 솔루션을 연결합니다."
+                  : "Shinhotek connects products and solutions for customer processes through a partner network across lasers, optics, metrology, and automation."}
+              </p>
+            </div>
+            <div className="companyPartnerGrid">
+              {partnerItems.map((partner) => (
+                <article key={partner.name} className="companyPartnerCard">
+                  <strong>{partner.name}</strong>
+                  <p>{partner.body}</p>
+                  {partner.website ? (
+                    <a href={partner.website} target="_blank" rel="noreferrer">
+                      {isKo ? "웹사이트 보기" : "Visit website"}
+                    </a>
+                  ) : null}
+                </article>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="companyDirectionsSection">
+        <div className="container">
+          <div className="companyDirectionsIntro">
+            <span className="eyebrow">LOCATION</span>
+            <h2 className="sectionTitle">{isKo ? "찾아오는길" : "Directions"}</h2>
+          </div>
+          <DirectionsContent locale={locale} />
         </div>
       </section>
     </div>

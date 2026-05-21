@@ -29,6 +29,33 @@ const productShowcaseImageClasses: Record<string, string> = {
   "beam-delivery": "isPhoto",
 };
 
+const productCategoryTags: Record<string, { ko: string[]; en: string[] }> = {
+  laser: {
+    ko: ["CO2 Laser", "DPSS / Fiber", "Ultrafast", "Diode / Excimer"],
+    en: ["CO2 Laser", "DPSS / Fiber", "Ultrafast", "Diode / Excimer"],
+  },
+  "laser-scanner": {
+    ko: ["2D / 3D Scanner", "Polygon Scanner", "Drilling Head", "Control Software"],
+    en: ["2D / 3D Scanner", "Polygon Scanner", "Drilling Head", "Control Software"],
+  },
+  "laser-metrology": {
+    ko: ["Power Meter", "Energy Meter", "Beam Analysis", "Sensors"],
+    en: ["Power Meter", "Energy Meter", "Beam Analysis", "Sensors"],
+  },
+  "optical-solution": {
+    ko: ["Optical Design", "Custom Assembly", "Beam Shaping", "Process Review"],
+    en: ["Optical Design", "Custom Assembly", "Beam Shaping", "Process Review"],
+  },
+  "coating-solution": {
+    ko: ["AR Coating", "HR Coating", "High Power Optics", "Custom Coating"],
+    en: ["AR Coating", "HR Coating", "High Power Optics", "Custom Coating"],
+  },
+  "beam-delivery": {
+    ko: ["Beam Expander", "Delivery Optics", "Optical Head", "Path Configuration"],
+    en: ["Beam Expander", "Delivery Optics", "Optical Head", "Path Configuration"],
+  },
+};
+
 const defaultProductMap = new Map(defaultProducts.map((product) => [product.slug, product]));
 
 function splitProductParagraphs(value: string) {
@@ -84,7 +111,7 @@ export async function generateMetadata({
     locale,
     path: "/products",
     title: isKo
-      ? "Product | 신호텍 레이저·광학 제품"
+      ? "제품소개 | 신호텍 레이저·광학 제품"
       : "Product | Shinhotek Laser and Optical Products",
     description: isKo
       ? "Laser, Laser Scanner, Laser Metrology, Optical Solution, Coating Solution, Beam Delivery 제품군을 확인하세요."
@@ -141,6 +168,7 @@ export default async function ProductsPage({
             const detailHref = `/${locale}/products/${product.slug}`;
             const localizedTitle = locale === "ko" ? product.nameKo : product.nameEn;
             const localizedSummary = getManagedProductSummary(product, locale);
+            const tags = productCategoryTags[product.slug]?.[locale] ?? [];
 
             return (
               <article key={product.slug} className="productShowcaseRow">
@@ -163,6 +191,13 @@ export default async function ProductsPage({
                       <p key={`${product.slug}-summary-${index}`}>{renderProductLines(paragraph)}</p>
                     ))}
                   </div>
+                  {tags.length > 0 ? (
+                    <ul className="productShowcaseTags" aria-label={locale === "ko" ? "주요 구성" : "Key lineup"}>
+                      {tags.map((tag) => (
+                        <li key={tag}>{tag}</li>
+                      ))}
+                    </ul>
+                  ) : null}
                 </div>
               </article>
             );

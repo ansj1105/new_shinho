@@ -3999,6 +3999,28 @@ select {
   margin: 0;
 }
 
+.productShowcaseTags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 4px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.productShowcaseTags li {
+  display: inline-flex;
+  align-items: center;
+  min-height: 30px;
+  padding: 0 11px;
+  border: 1px solid rgba(28, 79, 150, 0.2);
+  background: #f6f9fd;
+  color: #214d87;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1;
+}
+
 .productSubnav {
   position: sticky;
   top: var(--subnav-sticky-top);
@@ -8571,9 +8593,12 @@ body {
   text-transform: uppercase;
 }
 
-.desktopNavLink::after,
-.navItem::after {
+.desktopNavLink::after {
   background: var(--ulo-cyan);
+}
+
+.navItem::after {
+  background: transparent;
 }
 
 .navDropdown {
@@ -8914,9 +8939,12 @@ body {
   letter-spacing: 0.015em;
 }
 
-.desktopNavLink::after,
-.navItem::after {
+.desktopNavLink::after {
   background: var(--sh-cyan);
+}
+
+.navItem::after {
+  background: transparent;
 }
 
 .navDropdown {
@@ -9134,7 +9162,7 @@ body {
 
 .homeSolutionGrid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   border-top: 1px solid var(--sh-line);
   border-bottom: 1px solid var(--sh-line);
   background: #ffffff;
@@ -9146,6 +9174,8 @@ body {
   min-height: 260px;
   padding: clamp(26px, 3vw, 42px);
   border-right: 1px solid var(--sh-line);
+  color: inherit;
+  text-decoration: none;
 }
 
 .homeSolutionItem:last-child {
@@ -9190,6 +9220,14 @@ body {
   line-height: 1.12;
 }
 
+.homeContactBand p {
+  max-width: 720px;
+  margin: 12px 0 0;
+  color: rgba(255, 255, 255, 0.74);
+  font-size: 15px;
+  line-height: 1.7;
+}
+
 .makerMarquee {
   overflow: hidden;
   border-top: 1px solid var(--sh-line);
@@ -9213,6 +9251,166 @@ body {
   font-weight: 800;
   letter-spacing: 0.18em;
   white-space: nowrap;
+}
+
+.companyPartnerSection {
+  padding: clamp(44px, 5vw, 72px) 0;
+}
+
+.companyPartnerSurface {
+  display: grid;
+  gap: clamp(28px, 4vw, 44px);
+  padding: clamp(28px, 4vw, 54px);
+  border-top: 3px solid var(--sh-blue);
+  background: #ffffff;
+}
+
+.companyPartnerIntro {
+  max-width: 920px;
+}
+
+.companyPartnerGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  border-top: 1px solid var(--sh-line);
+  border-bottom: 1px solid var(--sh-line);
+}
+
+.companyPartnerCard {
+  min-height: 190px;
+  padding: clamp(22px, 2.5vw, 34px);
+  border-right: 1px solid var(--sh-line);
+}
+
+.companyPartnerCard:last-child {
+  border-right: 0;
+}
+
+.companyPartnerCard strong {
+  display: block;
+  color: var(--sh-blue);
+  font-size: clamp(20px, 1.8vw, 28px);
+  line-height: 1.1;
+}
+
+.companyPartnerCard p {
+  margin: 16px 0 0;
+  color: var(--sh-muted);
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+.companyPartnerCard a {
+  display: inline-flex;
+  margin-top: 16px;
+  color: var(--sh-blue);
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.companyDirectionsSection {
+  padding: 0 0 clamp(64px, 7vw, 104px);
+}
+
+.companyDirectionsIntro {
+  margin-bottom: 24px;
+}
+
+.contactSupportGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  border-top: 3px solid var(--sh-blue);
+  border-bottom: 1px solid var(--sh-line);
+  background: #ffffff;
+}
+
+.contactSupportCard {
+  display: grid;
+  align-content: start;
+  gap: 16px;
+  min-height: 250px;
+  padding: clamp(24px, 3vw, 40px);
+  border-right: 1px solid var(--sh-line);
+}
+
+.contactSupportCard:last-child {
+  border-right: 0;
+}
+
+.contactSupportCard h2 {
+  margin: 0;
+  color: var(--sh-ink);
+  font-size: clamp(22px, 2vw, 32px);
+  line-height: 1.1;
+}
+
+.contactSupportCard p {
+  margin: 0;
+  color: var(--sh-muted);
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+.contactSupportCard .button {
+  align-self: end;
+  justify-self: start;
+}
+
+.testDemoPanel {
+  display: grid;
+  gap: clamp(26px, 3vw, 40px);
+  padding: clamp(28px, 4vw, 54px);
+  border-top: 3px solid var(--sh-blue);
+  background: #ffffff;
+}
+
+.testDemoIntro {
+  max-width: 860px;
+}
+
+.testDemoSteps {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  border-top: 1px solid var(--sh-line);
+  border-bottom: 1px solid var(--sh-line);
+}
+
+.testDemoStep {
+  min-height: 220px;
+  padding: clamp(22px, 2.7vw, 36px);
+  border-right: 1px solid var(--sh-line);
+}
+
+.testDemoStep:last-child {
+  border-right: 0;
+}
+
+.testDemoStep span {
+  color: var(--sh-cyan);
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+}
+
+.testDemoStep h3 {
+  margin: 22px 0 12px;
+  color: var(--sh-ink);
+  font-size: clamp(21px, 1.8vw, 30px);
+  line-height: 1.12;
+}
+
+.testDemoStep p {
+  margin: 0;
+  color: var(--sh-muted);
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+.testDemoActions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
 }
 
 @keyframes makerMarquee {
@@ -9278,6 +9476,26 @@ body {
   .homeContactBand {
     align-items: flex-start;
     flex-direction: column;
+  }
+
+  .companyPartnerGrid,
+  .contactSupportGrid,
+  .testDemoSteps {
+    grid-template-columns: 1fr;
+  }
+
+  .companyPartnerCard,
+  .contactSupportCard,
+  .testDemoStep {
+    min-height: 0;
+    border-right: 0;
+    border-bottom: 1px solid var(--sh-line);
+  }
+
+  .companyPartnerCard:last-child,
+  .contactSupportCard:last-child,
+  .testDemoStep:last-child {
+    border-bottom: 0;
   }
 }
 
