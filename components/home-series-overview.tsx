@@ -55,8 +55,8 @@ export function HomeSeriesOverview({
         };
       })
     : seriesItems;
-  const desktopTopRow = mergedSeriesItems.slice(0, 4);
-  const desktopBottomRow = mergedSeriesItems.slice(4);
+  const desktopTopRow = mergedSeriesItems.slice(0, 3);
+  const desktopBottomRow = mergedSeriesItems.slice(3);
 
   useEffect(() => {
     const sectionElement = document.getElementById("homeSeriesSection");

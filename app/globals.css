@@ -10437,3 +10437,21 @@ body {
     text-align: left;
   }
 }
+
+
+/* Product category grid: show 3 items per row on desktop */
+.homeSeriesRow .seriesFeatureCard,
+.homeSeriesRow.isBottom .seriesFeatureCard {
+  width: calc(100% / 3);
+}
+
+.homeSeriesRow .seriesFeatureCard:nth-child(3n) {
+  border-right: 0;
+}
+
+@media (max-width: 960px) {
+  .homeSeriesRow .seriesFeatureCard,
+  .homeSeriesRow.isBottom .seriesFeatureCard {
+    width: 100%;
+  }
+}
