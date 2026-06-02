@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
+import Image from "next/image";
+import Link from "next/link";
 
-import { ApplicationImageRail } from "@/components/application-image-rail";
-import { FadeImage } from "@/components/fade-image";
 import { SubpageHero } from "@/components/subpage-hero";
-import { applicationGalleryImages } from "@/lib/application-gallery";
 import { getApplications, getPageHeroConfig } from "@/lib/content";
 import { defaultApplications } from "@/lib/default-content";
 import { getDictionary } from "@/lib/dictionaries";
@@ -47,6 +46,8 @@ function renderApplicationLines(paragraph: string) {
     </span>
   ));
 }
+
+const solutionNumbers = ["01", "02", "03", "04"];
 
 export async function generateMetadata({
   params,
@@ -101,7 +102,6 @@ export default async function ApplicationsPage({
       imageUrl: entry.imageUrl ?? "",
       bodyKo: entry.summaryKo ?? koreanCopy?.body ?? "",
       bodyEn: entry.summaryEn ?? englishCopy?.body ?? "",
-      galleryImages: applicationGalleryImages[entry.slug] ?? [],
     };
   });
 
@@ -115,53 +115,58 @@ export default async function ApplicationsPage({
         backgroundImageUrl={heroConfig?.backgroundImageUrl || "/subpage-applications-bg.png"}
         backgroundOpacity={heroConfig?.backgroundOpacity ?? 0.6}
       />
-      {/* <ApplicationsIndexNav locale={locale} items={applicationEntries} /> */}
+      <div className="solutionPageBody">
+        <div className="container solutionPageShell">
+          <section className="solutionPageIntro">
+            <span>SHINHOTEK SOLUTION</span>
+            <h2>{locale === "ko" ? "공정 조건에 맞춘 설계형 솔루션" : "Engineering-led solutions for process requirements"}</h2>
+            <p>
+              {locale === "ko"
+                ? "제품 적용 전 검토부터 광학계, 기구, 소프트웨어 연동까지 하나의 기술 흐름으로 구성합니다."
+                : "From application review to optics, mechanics, and software integration, each solution is organized as one technical workflow."}
+            </p>
+          </section>
 
-      <div className="applicationsBody applicationsBodyShowcase">
-        <div className="container applicationsShowcase">
-          {normalizedApplicationEntries.map((entry) => {
+          <div className="solutionCategoryGrid">
+          {normalizedApplicationEntries.map((entry, index) => {
             const localizedTitle = locale === "ko" ? entry.titleKo : entry.titleEn;
             const localizedBody = locale === "ko" ? entry.bodyKo : entry.bodyEn;
+            const capabilities = solutionCapabilityMap[entry.slug]?.[locale] ?? [];
 
             return (
-              <section key={entry.slug} id={entry.slug} className="applicationShowcaseRow">
-                <div className="applicationShowcaseMedia">
-                  <FadeImage
-                    src={entry.imageUrl}
+              <article key={entry.slug} id={entry.slug} className="solutionCategoryCard">
+                <div className="solutionCategoryMedia">
+                  <Image
+                    src={entry.imageUrl || "/subpage-applications-bg.png"}
                     alt={localizedTitle}
-                    width={960}
-                    height={720}
-                    sizes="(max-width: 720px) 100vw, (max-width: 960px) 220px, 280px"
-                    className="applicationShowcaseImage"
-                    skeletonClassName="applicationShowcaseSkeleton"
+                    fill
+                    sizes="(max-width: 960px) 100vw, 42vw"
+                    className="solutionCategoryImage"
                   />
+                  <span className="solutionCategoryIndex">{solutionNumbers[index] ?? String(index + 1).padStart(2, "0")}</span>
                 </div>
-                <div className="applicationShowcaseBody">
+                <div className="solutionCategoryBody">
                   <h2 className="applicationShowcaseTitle">{localizedTitle}</h2>
                   <div className="applicationShowcaseText">
                     {splitApplicationParagraphs(localizedBody).map((paragraph, index) => (
                       <p key={`${entry.slug}-body-${index}`}>{renderApplicationLines(paragraph)}</p>
                     ))}
                   </div>
-                  {solutionCapabilityMap[entry.slug] ? (
-                    <div className="solutionCapabilityPanel" aria-label={locale === "ko" ? "핵심 역량" : "Core capabilities"}>
-                      <span>{locale === "ko" ? "핵심 역량" : "Capabilities"}</span>
-                      <div>
-                        {solutionCapabilityMap[entry.slug][locale].map((capability) => (
-                          <strong key={capability}>{capability}</strong>
-                        ))}
-                      </div>
-                    </div>
+                  {capabilities.length ? (
+                    <ul className="solutionCapabilityList" aria-label={locale === "ko" ? "핵심 역량" : "Core capabilities"}>
+                      {capabilities.map((capability) => (
+                        <li key={capability}>{capability}</li>
+                      ))}
+                    </ul>
                   ) : null}
+                  <Link href={`/${locale}/contact/quote`} className="solutionCategoryCta">
+                    {locale === "ko" ? "상담 문의" : "Request consultation"}
+                  </Link>
                 </div>
-                <ApplicationImageRail
-                  images={entry.galleryImages}
-                  title={localizedTitle}
-                  locale={locale}
-                />
-              </section>
+              </article>
             );
           })}
+          </div>
         </div>
       </div>
     </div>
