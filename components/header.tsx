@@ -10,7 +10,11 @@ import type { Locale } from "@/lib/site";
 
 type HeaderProps = {
   locale: Locale;
-  productLinks: Array<{ label: string; href: string }>;
+  productLinks: Array<{
+    label: string;
+    href: string;
+    children?: Array<{ label: string; href: string }>;
+  }>;
 };
 
 export function Header({ locale, productLinks }: HeaderProps) {
@@ -90,17 +94,35 @@ export function Header({ locale, productLinks }: HeaderProps) {
                 {item.children ? (
                   <div className="navDropdown card">
                     {item.children.map((child) => (
-                      <Link
-                        key={child.href}
-                        href={`/${locale}${child.href}`}
-                        className="navDropdownLink"
-                        onClick={() => {
-                          setOpenNavHref(null);
-                          setSuppressNavHover(true);
-                        }}
-                      >
-                        {child.label}
-                      </Link>
+                      <div key={child.href} className="navDropdownGroup">
+                        <Link
+                          href={`/${locale}${child.href}`}
+                          className="navDropdownLink"
+                          onClick={() => {
+                            setOpenNavHref(null);
+                            setSuppressNavHover(true);
+                          }}
+                        >
+                          {child.label}
+                        </Link>
+                        {"children" in child && child.children?.length ? (
+                          <div className="navDropdownDepthList">
+                            {child.children.map((grandChild) => (
+                              <Link
+                                key={grandChild.href}
+                                href={`/${locale}${grandChild.href}`}
+                                className="navDropdownDepthLink"
+                                onClick={() => {
+                                  setOpenNavHref(null);
+                                  setSuppressNavHover(true);
+                                }}
+                              >
+                                {grandChild.label}
+                              </Link>
+                            ))}
+                          </div>
+                        ) : null}
+                      </div>
                     ))}
                   </div>
                 ) : null}
@@ -195,14 +217,29 @@ export function Header({ locale, productLinks }: HeaderProps) {
                   }`}
                 >
                   {item.children.map((child) => (
-                    <Link
-                      key={child.href}
-                      href={`/${locale}${child.href}`}
-                      className="mobileMenuLink"
-                      onClick={() => setMobileOpen(false)}
-                    >
-                      {child.label}
-                    </Link>
+                    <div key={child.href} className="mobileMenuDepthGroup">
+                      <Link
+                        href={`/${locale}${child.href}`}
+                        className="mobileMenuLink"
+                        onClick={() => setMobileOpen(false)}
+                      >
+                        {child.label}
+                      </Link>
+                      {"children" in child && child.children?.length ? (
+                        <div className="mobileMenuDepthLinks">
+                          {child.children.map((grandChild) => (
+                            <Link
+                              key={grandChild.href}
+                              href={`/${locale}${grandChild.href}`}
+                              className="mobileMenuDepthLink"
+                              onClick={() => setMobileOpen(false)}
+                            >
+                              {grandChild.label}
+                            </Link>
+                          ))}
+                        </div>
+                      ) : null}
+                    </div>
                   ))}
                 </div>
               ) : null}

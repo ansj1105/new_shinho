@@ -54,27 +54,26 @@ export default async function ResourceListPage({
         lightText
       />
       <div className="container subpageContent">
-        <div className="resourcesNewsLayout">
-          <div className="resourcesNewsHead">
-            <span>{locale === "ko" ? "기술 자료와 공지" : "News and technical resources"}</span>
-            <strong>{locale === "ko" ? "최신 자료" : "Latest updates"}</strong>
+        <div className="resourcesTableWrap">
+          <div className="resourcesTableHead">
+            <span>No.</span>
+            <span>{locale === "ko" ? "제목" : "Title"}</span>
+            <span>{locale === "ko" ? "등록일" : "Date"}</span>
           </div>
-          <div className="resourcesNewsGrid">
-            {resources.map((resource) => {
+          <div className="resourcesTableBody">
+            {resources.map((resource, index) => {
               const localizedTitle = locale === "ko" ? resource.titleKo : resource.titleEn;
-              const localizedExcerpt = locale === "ko" ? resource.excerptKo : resource.excerptEn;
               const publishedDate = new Date(resource.publishedAt ?? resource.createdAt).toLocaleDateString(locale === "ko" ? "ko-KR" : "en-US");
 
               return (
                 <Link
                   key={resource.slug}
                   href={`/${locale}/contact/resources/${resource.slug}`}
-                  className="resourcesNewsCard"
+                  className="resourcesRow"
                 >
-                  <span className="resourcesNewsDate">{publishedDate}</span>
-                  <strong>{localizedTitle}</strong>
-                  {localizedExcerpt ? <p>{localizedExcerpt}</p> : null}
-                  <span className="resourcesNewsMore">{locale === "ko" ? "자세히 보기" : "Read more"}</span>
+                  <span>{String(index + 1).padStart(2, "0")}</span>
+                  <span className="resourcesRowTitle">{localizedTitle}</span>
+                  <span>{publishedDate}</span>
                 </Link>
               );
             })}

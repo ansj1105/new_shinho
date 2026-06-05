@@ -72,8 +72,85 @@ export const defaultApplications = [
     summaryEn:
       "Shinhotek reviews wavelength, power, beam shape, working distance, and equipment constraints together to propose optical solutions for each process goal, from product selection to application testing.",
     imageUrl: "/subpage-software-bg.png",
-    bulletsKo: [],
-    bulletsEn: [],
+    bulletsKo: ["공정 조건 분석", "제품 선정", "시험 구성", "기술 검토"],
+    bulletsEn: ["Process analysis", "Product selection", "Test setup", "Technical review"],
+    detailTitleKo: "LiDAR 센서를 위한 광학 모듈과 구성 부품",
+    detailTitleEn: "Optical modules and components for LiDAR sensors",
+    detailBodyKo:
+      "LiDAR 시스템은 자율주행, 로봇, 검사 자동화에서 거리와 공간 정보를 안정적으로 확보하기 위한 핵심 기술입니다. 신호텍은 송신부와 수신부에 필요한 광학 모듈, 빔 쉐이핑, 스캐너, 계측 장비를 적용 조건에 맞춰 검토합니다.\n\n초기 기획 단계부터 제조사 기술 협의, 테스트 구성, 데모 검토까지 하나의 흐름으로 연결해 고객이 실제 적용 가능성을 빠르게 판단할 수 있도록 지원합니다.",
+    detailBodyEn:
+      "LiDAR systems are key technologies for reliable distance and spatial information in autonomous driving, robotics, and inspection automation. SHINHOTEK reviews optical modules, beam shaping, scanners, and metrology tools for transmitter and receiver requirements.\n\nFrom early planning to manufacturer coordination, test setup, and demo review, we help customers evaluate real application feasibility with a connected workflow.",
+    detailImageUrl: "/applications/automotive-lidar.png",
+    detailBenefitsKo: [
+      "광학 시스템 통합 검토와 공정 적용성 평가",
+      "자율주행 및 산업 검사 환경에 맞춘 모듈 구성",
+      "DOE, ROE, 스캐너, 계측 장비를 연계한 제품 선정",
+      "제조사 기술 협의, 테스트, 데모 구성 지원",
+    ],
+    detailBenefitsEn: [
+      "Optical system integration review and application feasibility checks",
+      "Module configuration for autonomous driving and industrial inspection",
+      "Product selection across DOE, ROE, scanner, and metrology equipment",
+      "Manufacturer coordination, test planning, and demo support",
+    ],
+    detailUseCasesKo: [
+      "자율주행 및 ADAS용 LiDAR 송수신 광학계",
+      "산업용 거리 측정, 로봇, 물류 자동화",
+      "검사 장비용 빔 쉐이핑 및 광학 모듈",
+      "정밀 가공 라인의 레이저 스캐너 및 계측 구성",
+    ],
+    detailUseCasesEn: [
+      "LiDAR transmitter and receiver optics for ADAS and autonomous driving",
+      "Industrial distance sensing, robotics, and logistics automation",
+      "Beam shaping and optical modules for inspection systems",
+      "Laser scanner and metrology setups for precision processing lines",
+    ],
+    detailModulesKo: [
+      {
+        title: "Diffractive Optical Elements (DOEs)",
+        image: "/products/customizing/solution/customer-filter-slot.png",
+        body: "빔 분할, 빔 쉐이핑, 패턴 생성 등 LiDAR와 검사 장비에 필요한 회절 광학 모듈을 검토합니다.",
+      },
+      {
+        title: "Refractive Optical Elements (ROEs)",
+        image: "/products/customizing/solution/fs-beam-attenuation.png",
+        body: "자유형상 렌즈와 굴절 광학계를 활용해 목적에 맞는 빔 품질과 광학 성능을 구성합니다.",
+      },
+      {
+        title: "LiDAR Optical Modules",
+        image: "/applications/gallery/automotive-lidar/vcsel-lidar.jpg",
+        body: "VCSEL, 확산 광원, 수광 광학계 등 LiDAR 센서에 필요한 광학 모듈을 연결합니다.",
+      },
+      {
+        title: "Laser Sensors & Scanner",
+        image: "/makers/scanlab.png",
+        body: "거리 센서, 스캐너, 계측 장비를 공정 라인과 자동화 장비 조건에 맞춰 제안합니다.",
+      },
+    ],
+    detailModulesEn: [
+      {
+        title: "Diffractive Optical Elements (DOEs)",
+        image: "/products/customizing/solution/customer-filter-slot.png",
+        body: "Review diffractive optics for beam splitting, beam shaping, and pattern generation in LiDAR and inspection systems.",
+      },
+      {
+        title: "Refractive Optical Elements (ROEs)",
+        image: "/products/customizing/solution/fs-beam-attenuation.png",
+        body: "Configure beam quality and optical performance using freeform lenses and refractive optical systems.",
+      },
+      {
+        title: "LiDAR Optical Modules",
+        image: "/applications/gallery/automotive-lidar/vcsel-lidar.jpg",
+        body: "Connect optical modules for LiDAR sensors, including VCSEL, diffused light sources, and receiver optics.",
+      },
+      {
+        title: "Laser Sensors & Scanner",
+        image: "/makers/scanlab.png",
+        body: "Propose distance sensors, scanners, and metrology tools suited to process lines and automation equipment.",
+      },
+    ],
+    detailCtaKo: "문의하기",
+    detailCtaEn: "Contact us",
   },
   {
     slug: "optical-design",
@@ -84,8 +161,8 @@ export const defaultApplications = [
     summaryEn:
       "We review lenses, mirrors, beam shaping, and beam delivery layouts against process requirements, designing practical optical systems around performance, stability, and maintenance.",
     imageUrl: "/applications/semiconductor.png",
-    bulletsKo: [],
-    bulletsEn: [],
+    bulletsKo: ["렌즈/미러 구성", "빔 쉐이핑", "광학 경로 설계", "성능 검토"],
+    bulletsEn: ["Lens and mirror layout", "Beam shaping", "Optical path design", "Performance review"],
   },
   {
     slug: "mechanical-design",
@@ -96,8 +173,8 @@ export const defaultApplications = [
     summaryEn:
       "We configure module structures and interfaces for stable mounting of scanners, lenses, optical heads, and metrology systems while considering equipment space and maintenance access.",
     imageUrl: "/applications/automotive-lidar.png",
-    bulletsKo: [],
-    bulletsEn: [],
+    bulletsKo: ["모듈 구조", "장착 인터페이스", "유지보수 동선", "장비 공간 검토"],
+    bulletsEn: ["Module structure", "Mounting interface", "Maintenance access", "Equipment space review"],
   },
   {
     slug: "software-design",
@@ -108,8 +185,8 @@ export const defaultApplications = [
     summaryEn:
       "We support software integration so equipment control, measurement data, and operating screens work as one flow, with clear control and data structures for production operators.",
     imageUrl: "/applications/medical-bio.png",
-    bulletsKo: [],
-    bulletsEn: [],
+    bulletsKo: ["장비 제어", "데이터 연동", "운영 화면", "측정 흐름 관리"],
+    bulletsEn: ["Equipment control", "Data integration", "Operator UI", "Measurement workflow"],
   },
 ] as const;
 
@@ -224,6 +301,37 @@ export const defaultProducts = [
   seoTitleEn: string;
   seoDescriptionKo: string;
   seoDescriptionEn: string;
+}>;
+
+export const defaultManufacturerLogos = [
+  { name: "Spark Lasers", logoUrl: "/makers/spark-lasers.png", href: "https://spark-lasers.com/" },
+  { name: "Iradion", logoUrl: "/makers/iradion.png", href: "https://iradionlaser.com/" },
+  { name: "MLase", logoUrl: "/makers/mlase.png", href: "https://mlase.com/" },
+  { name: "Coherent", logoUrl: "/makers/coherent.png", href: "https://www.coherent.com/ko" },
+  { name: "SemiNex", logoUrl: "/makers/seminex.png", href: "https://seminex.com/" },
+  { name: "Monocrom", logoUrl: "/makers/monocrom.png", href: "https://monocrom.com/" },
+  { name: "Optical Engines", logoUrl: "/makers/optical-engines.webp", href: "https://opticalenginesinc.com/" },
+  { name: "SCANLAB", logoUrl: "/makers/scanlab.jpg", href: "https://www.scanlab.de/ko" },
+  { name: "LaserPoint", logoUrl: "/makers/laserpoint.png", href: "https://www.laserpoint.eu/" },
+  { name: "LUMOS", logoUrl: "/makers/lumos.png", href: "https://www.lumosity.co.kr/" },
+  { name: "AdlOptica", logoUrl: "/makers/adloptica.webp", href: "https://www.adloptica.com/" },
+  { name: "Cailabs", logoUrl: "/makers/cailabs.png", href: "https://www.cailabs.com/" },
+  { name: "PowerPhotonic", logoUrl: "/makers/powerphotonic.png", href: "https://www.powerphotonic.com/" },
+  { name: "Optoman", logoUrl: "/makers/optoman.png", href: "https://www.optoman.com/" },
+  { name: "ULO Optics", logoUrl: "/makers/ulo-optics-black.jpg", href: "https://www.ulooptics.com/" },
+  { name: "Zenops", logoUrl: "/makers/zenops.png", href: "https://zenops.co.kr/default/main/main.php" },
+  { name: "Photonic Tools", logoUrl: "/makers/photonic-tools.png", href: "https://www.photonic-tools.de/" },
+  { name: "MLOptic", logoUrl: "/makers/mloptic.png", href: "https://www.mloptic.com/" },
+].map((item, index) => ({
+  ...item,
+  displayOrder: index + 1,
+  published: true,
+})) as Array<{
+  name: string;
+  logoUrl: string;
+  href: string;
+  displayOrder: number;
+  published: boolean;
 }>;
 
 export const defaultResources = [

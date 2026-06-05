@@ -16,6 +16,19 @@ type ApplicationItem = {
   summaryEn: string;
   bulletsKo: unknown;
   bulletsEn: unknown;
+  detailTitleKo: string | null;
+  detailTitleEn: string | null;
+  detailBodyKo: string | null;
+  detailBodyEn: string | null;
+  detailImageUrl: string | null;
+  detailBenefitsKo: unknown;
+  detailBenefitsEn: unknown;
+  detailUseCasesKo: unknown;
+  detailUseCasesEn: unknown;
+  detailModulesKo: unknown;
+  detailModulesEn: unknown;
+  detailCtaKo: string | null;
+  detailCtaEn: string | null;
   imageUrl: string | null;
   published: boolean;
 };
@@ -26,6 +39,24 @@ function textValue(value: unknown) {
   }
 
   return "";
+}
+
+function moduleTextValue(value: unknown) {
+  if (!Array.isArray(value)) {
+    return "";
+  }
+
+  return value
+    .map((item) => {
+      if (!item || typeof item !== "object") {
+        return "";
+      }
+
+      const moduleItem = item as { title?: unknown; image?: unknown; body?: unknown };
+      return [moduleItem.title, moduleItem.image, moduleItem.body].map((part) => String(part ?? "").trim()).join("|");
+    })
+    .filter(Boolean)
+    .join("\n");
 }
 
 export function AdminApplicationsTabs({
@@ -136,6 +167,75 @@ export function AdminApplicationsTabs({
                 <textarea name="bulletsEn" />
               </label>
             </div>
+            <div className="lumosAdminEditorPanel">
+              <div className="lumosAdminEditorHead">
+                <div>
+                  <strong>광학솔루션 상세 구성</strong>
+                  <span>광학솔루션 상세 섹션의 제목, 본문, 리스트, 모듈, CTA를 관리합니다.</span>
+                </div>
+              </div>
+              <div className="lumosAdminFormGrid">
+                <label className="field">
+                  <span>Detail Title KO</span>
+                  <input name="detailTitleKo" />
+                </label>
+                <label className="field">
+                  <span>Detail Title EN</span>
+                  <input name="detailTitleEn" />
+                </label>
+                <label className="field">
+                  <span>Detail Image URL</span>
+                  <input name="detailImageUrl" />
+                </label>
+                <label className="field">
+                  <span>CTA KO</span>
+                  <input name="detailCtaKo" />
+                </label>
+                <label className="field">
+                  <span>CTA EN</span>
+                  <input name="detailCtaEn" />
+                </label>
+              </div>
+              <div className="lumosAdminFormGrid">
+                <label className="field">
+                  <span>Detail Body KO</span>
+                  <textarea name="detailBodyKo" />
+                </label>
+                <label className="field">
+                  <span>Detail Body EN</span>
+                  <textarea name="detailBodyEn" />
+                </label>
+              </div>
+              <div className="lumosAdminFormGrid">
+                <label className="field">
+                  <span>Benefits KO</span>
+                  <textarea name="detailBenefitsKo" />
+                </label>
+                <label className="field">
+                  <span>Benefits EN</span>
+                  <textarea name="detailBenefitsEn" />
+                </label>
+                <label className="field">
+                  <span>Applications KO</span>
+                  <textarea name="detailUseCasesKo" />
+                </label>
+                <label className="field">
+                  <span>Applications EN</span>
+                  <textarea name="detailUseCasesEn" />
+                </label>
+              </div>
+              <div className="lumosAdminFormGrid">
+                <label className="field">
+                  <span>Modules KO</span>
+                  <textarea name="detailModulesKo" placeholder="Title|/image.png|Body" />
+                </label>
+                <label className="field">
+                  <span>Modules EN</span>
+                  <textarea name="detailModulesEn" placeholder="Title|/image.png|Body" />
+                </label>
+              </div>
+              <p className="adminHint">Modules는 한 줄에 Title|Image URL|Body 형식으로 입력합니다.</p>
+            </div>
             <label className="lumosAdminCheckbox">
               <input type="checkbox" name="published" defaultChecked />
               <span>노출</span>
@@ -232,6 +332,83 @@ export function AdminApplicationsTabs({
                 <span>Bullets EN</span>
                 <textarea name="bulletsEn" defaultValue={textValue(activeApplication.bulletsEn)} />
               </label>
+            </div>
+            <div className="lumosAdminEditorPanel">
+              <div className="lumosAdminEditorHead">
+                <div>
+                  <strong>광학솔루션 상세 구성</strong>
+                  <span>광학솔루션 상세 섹션의 제목, 본문, 리스트, 모듈, CTA를 관리합니다.</span>
+                </div>
+              </div>
+              <div className="lumosAdminFormGrid">
+                <label className="field">
+                  <span>Detail Title KO</span>
+                  <input name="detailTitleKo" defaultValue={activeApplication.detailTitleKo ?? ""} />
+                </label>
+                <label className="field">
+                  <span>Detail Title EN</span>
+                  <input name="detailTitleEn" defaultValue={activeApplication.detailTitleEn ?? ""} />
+                </label>
+                <label className="field">
+                  <span>Detail Image URL</span>
+                  <input name="detailImageUrl" defaultValue={activeApplication.detailImageUrl ?? ""} />
+                </label>
+                <label className="field">
+                  <span>CTA KO</span>
+                  <input name="detailCtaKo" defaultValue={activeApplication.detailCtaKo ?? ""} />
+                </label>
+                <label className="field">
+                  <span>CTA EN</span>
+                  <input name="detailCtaEn" defaultValue={activeApplication.detailCtaEn ?? ""} />
+                </label>
+              </div>
+              <div className="lumosAdminFormGrid">
+                <label className="field">
+                  <span>Detail Body KO</span>
+                  <textarea name="detailBodyKo" defaultValue={activeApplication.detailBodyKo ?? ""} />
+                </label>
+                <label className="field">
+                  <span>Detail Body EN</span>
+                  <textarea name="detailBodyEn" defaultValue={activeApplication.detailBodyEn ?? ""} />
+                </label>
+              </div>
+              <div className="lumosAdminFormGrid">
+                <label className="field">
+                  <span>Benefits KO</span>
+                  <textarea name="detailBenefitsKo" defaultValue={textValue(activeApplication.detailBenefitsKo)} />
+                </label>
+                <label className="field">
+                  <span>Benefits EN</span>
+                  <textarea name="detailBenefitsEn" defaultValue={textValue(activeApplication.detailBenefitsEn)} />
+                </label>
+                <label className="field">
+                  <span>Applications KO</span>
+                  <textarea name="detailUseCasesKo" defaultValue={textValue(activeApplication.detailUseCasesKo)} />
+                </label>
+                <label className="field">
+                  <span>Applications EN</span>
+                  <textarea name="detailUseCasesEn" defaultValue={textValue(activeApplication.detailUseCasesEn)} />
+                </label>
+              </div>
+              <div className="lumosAdminFormGrid">
+                <label className="field">
+                  <span>Modules KO</span>
+                  <textarea
+                    name="detailModulesKo"
+                    defaultValue={moduleTextValue(activeApplication.detailModulesKo)}
+                    placeholder="Title|/image.png|Body"
+                  />
+                </label>
+                <label className="field">
+                  <span>Modules EN</span>
+                  <textarea
+                    name="detailModulesEn"
+                    defaultValue={moduleTextValue(activeApplication.detailModulesEn)}
+                    placeholder="Title|/image.png|Body"
+                  />
+                </label>
+              </div>
+              <p className="adminHint">Modules는 한 줄에 Title|Image URL|Body 형식으로 입력합니다.</p>
             </div>
             <label className="lumosAdminCheckbox">
               <input type="checkbox" name="published" defaultChecked={activeApplication.published} />

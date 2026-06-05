@@ -3,12 +3,14 @@
   defaultCompanyContent,
   defaultDistributorRegions,
   defaultDistributorSettings,
+  defaultManufacturerLogos,
   defaultPageHeroConfigs,
   defaultProducts,
   defaultResources,
   defaultSiteConfig,
 } from "@/lib/default-content";
 import { prisma } from "@/lib/prisma";
+import { productCategoryMakers } from "@/lib/product-makers";
 import type { Locale } from "@/lib/site";
 
 const fallbackNow = new Date();
@@ -38,6 +40,29 @@ const fallbackProducts = defaultProducts.map((product, index) => ({
   createdAt: fallbackNow,
   updatedAt: fallbackNow,
 }));
+
+const fallbackManufacturerLogos = defaultManufacturerLogos.map((logo, index) => ({
+  id: index + 1,
+  ...logo,
+  createdAt: fallbackNow,
+  updatedAt: fallbackNow,
+}));
+
+const fallbackProductMakers = Object.fromEntries(
+  Object.entries(productCategoryMakers).map(([productSlug, makers]) => [
+    productSlug,
+    makers.map((maker, index) => ({
+      id: index + 1,
+      productId: 0,
+      ...maker,
+      website: maker.website ?? null,
+      displayOrder: index + 1,
+      published: true,
+      createdAt: fallbackNow,
+      updatedAt: fallbackNow,
+    })),
+  ]),
+);
 
 const fallbackResources = defaultResources.map((resource, index) => ({
   id: index + 1,
@@ -203,6 +228,20 @@ export async function getProducts() {
   }
 }
 
+export async function getManufacturerLogos() {
+  try {
+    const logos = await prisma.manufacturerLogo.findMany({
+      where: { published: true },
+      orderBy: [{ displayOrder: "asc" }, { createdAt: "asc" }],
+    });
+
+    return logos.length ? logos : fallbackManufacturerLogos;
+  } catch (error) {
+    logFallback("manufacturerLogos", error);
+    return fallbackManufacturerLogos;
+  }
+}
+
 export async function getProductBySlug(slug: string) {
   try {
     const product = await prisma.product.findUnique({
@@ -223,6 +262,58 @@ export async function getProductBySlug(slug: string) {
   } catch (error) {
     logFallback(`product:${slug}`, error);
     return fallbackProducts.find((product) => product.slug === slug) ?? null;
+  }
+}
+
+export async function getProductMakersByProductSlug(productSlug: string) {
+  try {
+    const product = await prisma.product.findUnique({
+      where: { slug: productSlug },
+      select: {
+        makers: {
+          where: { published: true },
+          orderBy: [{ displayOrder: "asc" }, { createdAt: "asc" }],
+        },
+      },
+    });
+
+    return product?.makers.length ? product.makers : fallbackProductMakers[productSlug] ?? [];
+  } catch (error) {
+    logFallback(`productMakers:${productSlug}`, error);
+    return fallbackProductMakers[productSlug] ?? [];
+  }
+}
+
+export async function getProductMakerBySlug(productSlug: string, makerSlug: string) {
+  try {
+    const product = await prisma.product.findUnique({
+      where: { slug: productSlug },
+      select: {
+        makers: {
+          where: {
+            slug: makerSlug,
+            published: true,
+          },
+          take: 1,
+        },
+      },
+    });
+
+    return product?.makers[0] ?? fallbackProductMakers[productSlug]?.find((maker) => maker.slug === makerSlug) ?? null;
+  } catch (error) {
+    logFallback(`productMaker:${productSlug}/${makerSlug}`, error);
+    return fallbackProductMakers[productSlug]?.find((maker) => maker.slug === makerSlug) ?? null;
+  }
+}
+
+export async function getProductMakersForAdmin() {
+  try {
+    return await prisma.productMaker.findMany({
+      orderBy: [{ productId: "asc" }, { displayOrder: "asc" }, { createdAt: "asc" }],
+    });
+  } catch (error) {
+    logFallback("productMakersAdmin", error);
+    return [];
   }
 }
 

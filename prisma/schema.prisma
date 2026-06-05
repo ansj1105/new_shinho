@@ -94,6 +94,19 @@ model Application {
   imageUrl         String?
   bulletsKo        Json
   bulletsEn        Json
+  detailTitleKo    String?
+  detailTitleEn    String?
+  detailBodyKo     String?  @db.Text
+  detailBodyEn     String?  @db.Text
+  detailImageUrl   String?
+  detailBenefitsKo Json?
+  detailBenefitsEn Json?
+  detailUseCasesKo Json?
+  detailUseCasesEn Json?
+  detailModulesKo  Json?
+  detailModulesEn  Json?
+  detailCtaKo      String?
+  detailCtaEn      String?
   sortOrder        Int      @default(0)
   published        Boolean  @default(true)
   createdAt        DateTime @default(now())
@@ -133,6 +146,7 @@ model Product {
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
   documents        ProductDocument[]
+  makers           ProductMaker[]
 }
 
 model ProductDocument {
@@ -152,6 +166,40 @@ model ProductDocument {
   product     Product            @relation(fields: [productId], references: [id], onDelete: Cascade)
 
   @@index([productId, kind])
+  @@index([published, displayOrder])
+}
+
+model ProductMaker {
+  id             Int      @id @default(autoincrement())
+  productId      Int
+  slug           String
+  name           String
+  logoUrl        String
+  website        String?
+  summaryKo      String   @db.Text
+  summaryEn      String   @db.Text
+  descriptionKo  String   @db.Text
+  descriptionEn  String   @db.Text
+  displayOrder   Int      @default(0)
+  published      Boolean  @default(true)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  product        Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@unique([productId, slug])
+  @@index([productId, published, displayOrder])
+}
+
+model ManufacturerLogo {
+  id           Int      @id @default(autoincrement())
+  name         String
+  logoUrl      String
+  href         String?
+  displayOrder Int      @default(0)
+  published    Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
   @@index([published, displayOrder])
 }
 

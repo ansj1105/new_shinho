@@ -44,7 +44,7 @@ export function AdminCompanyEditor({ companyContent }: { companyContent: Company
       <div className="lumosAdminSectionHead">
         <div>
           <h2>회사소개</h2>
-          <p>회사소개 페이지의 제목, 본문, Vision/Goal 문구를 수정합니다. 본문 줄바꿈은 공개 페이지에 반영됩니다.</p>
+          <p>회사소개, CEO 인사말 & 회사비전 페이지의 제목과 문구를 수정합니다. 본문 줄바꿈은 공개 페이지에 반영됩니다.</p>
         </div>
       </div>
 
@@ -67,28 +67,28 @@ export function AdminCompanyEditor({ companyContent }: { companyContent: Company
 
         <div className="lumosAdminEditorPanel">
           <div className="lumosAdminEditorHead">
-            <strong>History Content</strong>
-            <span>빈 줄은 문단 구분, 일반 줄바꿈은 같은 문단 내 줄바꿈으로 처리됩니다.</span>
+            <strong>CEO 인사말</strong>
+            <span>/ko/company/ceo-vision 상단 CEO 인사말 영역입니다. 빈 줄은 문단 구분, 일반 줄바꿈은 같은 문단 내 줄바꿈으로 처리됩니다.</span>
           </div>
           <div className="lumosAdminFormGrid">
             <label className="field">
-              <span>History Title KO</span>
+              <span>CEO 인사말 제목 KO</span>
               <input name="historyTitleKo" defaultValue={companyContent.historyTitleKo} />
             </label>
             <label className="field">
-              <span>History Title EN</span>
+              <span>CEO Message Title EN</span>
               <input name="historyTitleEn" defaultValue={companyContent.historyTitleEn} />
             </label>
           </div>
           <div className="lumosAdminFormGrid">
             <EditorField
-              label="History Body KO"
+              label="CEO 인사말 본문 KO"
               name="historyBodyKo"
               defaultValue={companyContent.historyBodyKo}
               rows={12}
             />
             <EditorField
-              label="History Body EN"
+              label="CEO Message Body EN"
               name="historyBodyEn"
               defaultValue={companyContent.historyBodyEn}
               rows={12}
@@ -98,49 +98,49 @@ export function AdminCompanyEditor({ companyContent }: { companyContent: Company
 
         <div className="lumosAdminEditorPanel">
           <div className="lumosAdminEditorHead">
-            <strong>Vision / Goal</strong>
-            <span>하단 Shinhotek 소개 블록의 타이틀과 본문을 관리합니다.</span>
+            <strong>회사소개 / 회사비전</strong>
+            <span>회사소개 메인 문구와 /ko/company/ceo-vision 하단 Vision/Goal 영역을 관리합니다.</span>
           </div>
           <div className="lumosAdminFormGrid">
             <label className="field">
-              <span>Brand KO</span>
+              <span>회사소개 제목 KO</span>
               <input name="brandTitleKo" defaultValue={companyContent.brandTitleKo} />
             </label>
             <label className="field">
-              <span>Brand EN</span>
+              <span>Company Intro Title EN</span>
               <input name="brandTitleEn" defaultValue={companyContent.brandTitleEn} />
             </label>
             <label className="field">
-              <span>Brand Lead KO</span>
+              <span>회사소개 문구 KO</span>
               <input name="brandLeadKo" defaultValue={companyContent.brandLeadKo} />
             </label>
             <label className="field">
-              <span>Brand Lead EN</span>
+              <span>Company Intro Text EN</span>
               <input name="brandLeadEn" defaultValue={companyContent.brandLeadEn} />
             </label>
           </div>
           <div className="lumosAdminFormGrid">
             <label className="field">
-              <span>Vision Title KO</span>
+              <span>비전 제목 KO</span>
               <input name="visionTitleKo" defaultValue={companyContent.visionTitleKo} />
             </label>
             <label className="field">
               <span>Vision Title EN</span>
               <input name="visionTitleEn" defaultValue={companyContent.visionTitleEn} />
             </label>
-            <EditorField label="Vision Body KO" name="visionBodyKo" defaultValue={companyContent.visionBodyKo} />
+            <EditorField label="비전 본문 KO" name="visionBodyKo" defaultValue={companyContent.visionBodyKo} />
             <EditorField label="Vision Body EN" name="visionBodyEn" defaultValue={companyContent.visionBodyEn} />
           </div>
           <div className="lumosAdminFormGrid">
             <label className="field">
-              <span>Goal Title KO</span>
+              <span>목표 제목 KO</span>
               <input name="goalTitleKo" defaultValue={companyContent.goalTitleKo} />
             </label>
             <label className="field">
               <span>Goal Title EN</span>
               <input name="goalTitleEn" defaultValue={companyContent.goalTitleEn} />
             </label>
-            <EditorField label="Goal Body KO" name="goalBodyKo" defaultValue={companyContent.goalBodyKo} />
+            <EditorField label="목표 본문 KO" name="goalBodyKo" defaultValue={companyContent.goalBodyKo} />
             <EditorField label="Goal Body EN" name="goalBodyEn" defaultValue={companyContent.goalBodyEn} />
           </div>
         </div>

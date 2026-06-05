@@ -2,7 +2,14 @@
 
 import { useMemo, useState } from "react";
 
-import { deleteProduct, deleteProductDocument, saveProduct, saveProductDocument } from "@/app/admin/actions";
+import {
+  deleteProduct,
+  deleteProductDocument,
+  deleteProductMaker,
+  saveProduct,
+  saveProductDocument,
+  saveProductMaker,
+} from "@/app/admin/actions";
 import { siteUrl } from "@/lib/site";
 
 type ProductItem = {
@@ -35,7 +42,23 @@ type ProductItem = {
   seoDescriptionKo: string | null;
   seoDescriptionEn: string | null;
   published: boolean;
+  makers: ProductMakerItem[];
   documents: ProductDocumentItem[];
+};
+
+type ProductMakerItem = {
+  id: number;
+  productId: number;
+  slug: string;
+  name: string;
+  logoUrl: string;
+  website: string | null;
+  summaryKo: string;
+  summaryEn: string;
+  descriptionKo: string;
+  descriptionEn: string;
+  displayOrder: number;
+  published: boolean;
 };
 
 type ProductDocumentItem = {
@@ -522,6 +545,149 @@ export function AdminProductsTabs({
               </div>
             </div>
           </form>
+          <section className="lumosAdminNestedSection">
+            <div className="lumosAdminSectionHead">
+              <div>
+                <h3>제조사 상세 관리</h3>
+                <p>제품군 하위 3depth 상세 페이지에 노출되는 제조사 로고, 설명, 링크를 관리합니다.</p>
+              </div>
+            </div>
+
+            <div className="lumosAdminDocumentList">
+              {activeProduct.makers.length ? (
+                activeProduct.makers.map((maker) => (
+                  <article key={maker.id} className="lumosAdminDocumentItem">
+                    <div className="lumosAdminDocumentMeta">
+                      <strong>{maker.name}</strong>
+                      <span>{`/${maker.slug}`}</span>
+                      <small>{maker.website ?? "No website"}</small>
+                    </div>
+                    <form action={saveProductMaker} className="lumosAdminDocumentForm">
+                      <input type="hidden" name="id" value={maker.id} />
+                      <input type="hidden" name="productId" value={activeProduct.id} />
+                      <div className="lumosAdminFormGrid">
+                        <label className="field">
+                          <span>Slug</span>
+                          <input name="slug" defaultValue={maker.slug} />
+                        </label>
+                        <label className="field">
+                          <span>순서</span>
+                          <input name="displayOrder" type="number" defaultValue={maker.displayOrder} />
+                        </label>
+                        <label className="field">
+                          <span>제조사명</span>
+                          <input name="name" defaultValue={maker.name} />
+                        </label>
+                        <label className="field">
+                          <span>Logo URL</span>
+                          <input name="logoUrl" defaultValue={maker.logoUrl} />
+                        </label>
+                        <label className="field">
+                          <span>Website</span>
+                          <input name="website" defaultValue={maker.website ?? ""} />
+                        </label>
+                      </div>
+                      <div className="lumosAdminFormGrid">
+                        <label className="field">
+                          <span>Summary KO</span>
+                          <textarea name="summaryKo" rows={3} defaultValue={maker.summaryKo} />
+                        </label>
+                        <label className="field">
+                          <span>Summary EN</span>
+                          <textarea name="summaryEn" rows={3} defaultValue={maker.summaryEn} />
+                        </label>
+                        <label className="field">
+                          <span>Description KO</span>
+                          <textarea name="descriptionKo" rows={5} defaultValue={maker.descriptionKo} />
+                        </label>
+                        <label className="field">
+                          <span>Description EN</span>
+                          <textarea name="descriptionEn" rows={5} defaultValue={maker.descriptionEn} />
+                        </label>
+                      </div>
+                      <div className="lumosAdminActionRow">
+                        <label className="lumosAdminCheckbox">
+                          <input type="checkbox" name="published" defaultChecked={maker.published} />
+                          <span>노출</span>
+                        </label>
+                        <button type="submit" className="lumosAdminPrimaryButton">
+                          제조사 저장
+                        </button>
+                      </div>
+                    </form>
+                    <form action={deleteProductMaker} className="lumosAdminInlineForm">
+                      <input type="hidden" name="id" value={maker.id} />
+                      <button type="submit" className="lumosAdminDangerButton">
+                        제조사 삭제
+                      </button>
+                    </form>
+                  </article>
+                ))
+              ) : (
+                <p className="lumosAdminEmptyText">등록된 제조사가 없습니다.</p>
+              )}
+            </div>
+
+            <form action={saveProductMaker} className="lumosAdminForm">
+              <input type="hidden" name="productId" value={activeProduct.id} />
+              <div className="lumosAdminSectionHead">
+                <div>
+                  <h3>새 제조사 추가</h3>
+                  <p>추가한 제조사는 제품군 페이지와 상단바 3depth 메뉴에 반영됩니다.</p>
+                </div>
+              </div>
+              <div className="lumosAdminFormGrid">
+                <label className="field">
+                  <span>Slug</span>
+                  <input name="slug" placeholder="maker-slug" />
+                </label>
+                <label className="field">
+                  <span>순서</span>
+                  <input name="displayOrder" type="number" defaultValue={activeProduct.makers.length + 1} />
+                </label>
+                <label className="field">
+                  <span>제조사명</span>
+                  <input name="name" />
+                </label>
+                <label className="field">
+                  <span>Logo URL</span>
+                  <input name="logoUrl" placeholder="/makers/example.png" />
+                </label>
+                <label className="field">
+                  <span>Website</span>
+                  <input name="website" />
+                </label>
+              </div>
+              <div className="lumosAdminFormGrid">
+                <label className="field">
+                  <span>Summary KO</span>
+                  <textarea name="summaryKo" rows={3} />
+                </label>
+                <label className="field">
+                  <span>Summary EN</span>
+                  <textarea name="summaryEn" rows={3} />
+                </label>
+                <label className="field">
+                  <span>Description KO</span>
+                  <textarea name="descriptionKo" rows={5} />
+                </label>
+                <label className="field">
+                  <span>Description EN</span>
+                  <textarea name="descriptionEn" rows={5} />
+                </label>
+              </div>
+              <div className="lumosAdminActionRow">
+                <label className="lumosAdminCheckbox">
+                  <input type="checkbox" name="published" defaultChecked />
+                  <span>노출</span>
+                </label>
+                <button type="submit" className="lumosAdminPrimaryButton">
+                  제조사 추가
+                </button>
+              </div>
+            </form>
+          </section>
+
           <section className="lumosAdminNestedSection">
             <div className="lumosAdminSectionHead">
               <div>

@@ -6,11 +6,13 @@ import {
   defaultCompanyContent,
   defaultDistributorRegions,
   defaultDistributorSettings,
+  defaultManufacturerLogos,
   defaultPageHeroConfigs,
   defaultProducts,
   defaultResources,
   defaultSiteConfig,
 } from "../lib/default-content";
+import { productCategoryMakers } from "../lib/product-makers";
 
 const prisma = new PrismaClient();
 
@@ -43,13 +45,40 @@ async function main() {
   }
 
   for (const product of defaultProducts) {
-    await prisma.product.upsert({
+    const savedProduct = await prisma.product.upsert({
       where: { slug: product.slug },
       update: {},
       create: {
         ...product,
       },
     });
+
+    const makers = productCategoryMakers[product.slug] ?? [];
+
+    for (const [makerIndex, makerItem] of makers.entries()) {
+      await prisma.productMaker.upsert({
+        where: {
+          productId_slug: {
+            productId: savedProduct.id,
+            slug: makerItem.slug,
+          },
+        },
+        update: {},
+        create: {
+          productId: savedProduct.id,
+          slug: makerItem.slug,
+          name: makerItem.name,
+          logoUrl: makerItem.logoUrl,
+          website: makerItem.website,
+          summaryKo: makerItem.summaryKo,
+          summaryEn: makerItem.summaryEn,
+          descriptionKo: makerItem.descriptionKo,
+          descriptionEn: makerItem.descriptionEn,
+          displayOrder: makerIndex + 1,
+          published: true,
+        },
+      });
+    }
   }
 
   for (const resource of defaultResources) {
@@ -61,6 +90,14 @@ async function main() {
       create: {
         ...resource,
       },
+    });
+  }
+
+  for (const logo of defaultManufacturerLogos) {
+    await prisma.manufacturerLogo.upsert({
+      where: { id: logo.displayOrder },
+      update: {},
+      create: logo,
     });
   }
 

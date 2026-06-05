@@ -1,9 +1,10 @@
 import Image from "next/image";
+import Link from "next/link";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { SubpageHero } from "@/components/subpage-hero";
-import { getProductBySlug } from "@/lib/content";
+import { getProductBySlug, getProductMakersByProductSlug } from "@/lib/content";
 import { buildPageMetadata } from "@/lib/seo";
 import type { Locale } from "@/lib/site";
 
@@ -14,48 +15,6 @@ const productReferenceMeta: Record<string, { count: number; labelKo: string; lab
   "optical-solution": { count: 5, labelKo: "Optical Solution 제품군", labelEn: "Optical solution groups" },
   "coating-solution": { count: 4, labelKo: "Coating Solution 제품군", labelEn: "Coating solution groups" },
   "beam-delivery": { count: 3, labelKo: "Beam Delivery 제품군", labelEn: "Beam delivery groups" },
-};
-
-const productCategoryMakers: Record<
-  string,
-  Array<{ name: string; logoUrl: string; website: string; summaryKo: string; summaryEn: string }>
-> = {
-  laser: [
-    { name: "Spark Lasers", logoUrl: "/makers/spark-lasers.png", website: "https://spark-lasers.com/", summaryKo: "초단펄스 레이저", summaryEn: "Ultrafast lasers" },
-    { name: "Iradion", logoUrl: "/makers/iradion.png", website: "https://iradionlaser.com/", summaryKo: "세라믹 CO2 레이저", summaryEn: "Ceramic CO2 lasers" },
-    { name: "MLase", logoUrl: "/makers/mlase.png", website: "https://mlase.com/", summaryKo: "산업용 레이저 소스", summaryEn: "Industrial laser sources" },
-    { name: "Coherent", logoUrl: "/makers/coherent.png", website: "https://www.coherent.com/ko", summaryKo: "레이저 및 광학 플랫폼", summaryEn: "Laser and optics platforms" },
-    { name: "SemiNex", logoUrl: "/makers/seminex.png", website: "https://seminex.com/", summaryKo: "고출력 다이오드 레이저", summaryEn: "High-power diode lasers" },
-    { name: "Monocrom", logoUrl: "/makers/monocrom.png", website: "https://monocrom.com/", summaryKo: "다이오드 레이저 모듈", summaryEn: "Diode laser modules" },
-    { name: "Optical Engines", logoUrl: "/makers/optical-engines.webp", website: "https://opticalenginesinc.com/", summaryKo: "레이저 엔진", summaryEn: "Laser engines" },
-    { name: "LaserPoint", logoUrl: "/makers/laserpoint.png", website: "https://www.laserpoint.eu/", summaryKo: "레이저 측정 연계", summaryEn: "Laser measurement support" },
-  ],
-  "laser-scanner": [
-    { name: "SCANLAB", logoUrl: "/makers/scanlab.jpg", website: "https://www.scanlab.de/ko", summaryKo: "스캔 헤드 및 제어", summaryEn: "Scan heads and controls" },
-  ],
-  "laser-metrology": [
-    { name: "LaserPoint", logoUrl: "/makers/laserpoint.png", website: "https://www.laserpoint.eu/", summaryKo: "파워/에너지 측정", summaryEn: "Power and energy measurement" },
-    { name: "LUMOS", logoUrl: "/makers/lumos.png", website: "https://www.lumosity.co.kr/", summaryKo: "빔 프로파일링", summaryEn: "Beam profiling" },
-    { name: "Coherent", logoUrl: "/makers/coherent.png", website: "https://www.coherent.com/ko", summaryKo: "계측 및 센서", summaryEn: "Metrology and sensors" },
-  ],
-  "optical-solution": [
-    { name: "AdlOptica", logoUrl: "/makers/adloptica.webp", website: "https://www.adloptica.com/", summaryKo: "빔 쉐이핑", summaryEn: "Beam shaping" },
-    { name: "Cailabs", logoUrl: "/makers/cailabs.png", website: "https://www.cailabs.com/", summaryKo: "광학 변환 솔루션", summaryEn: "Optical transformation solutions" },
-    { name: "PowerPhotonic", logoUrl: "/makers/powerphotonic.png", website: "https://www.powerphotonic.com/", summaryKo: "자유형상 광학", summaryEn: "Freeform optics" },
-    { name: "Optoman", logoUrl: "/makers/optoman.png", website: "https://www.optoman.com/", summaryKo: "고성능 광학 부품", summaryEn: "High-performance optics" },
-    { name: "ULO Optics", logoUrl: "/makers/ulo-optics.png", website: "https://www.ulooptics.com/", summaryKo: "산업용 광학 부품", summaryEn: "Industrial optics" },
-  ],
-  "coating-solution": [
-    { name: "Optoman", logoUrl: "/makers/optoman.png", website: "https://www.optoman.com/", summaryKo: "레이저 옵틱 코팅", summaryEn: "Laser optics coating" },
-    { name: "ULO Optics", logoUrl: "/makers/ulo-optics.png", website: "https://www.ulooptics.com/", summaryKo: "광학 부품 및 코팅", summaryEn: "Optics and coating" },
-    { name: "Photonic Tools", logoUrl: "/makers/photonic-tools.png", website: "https://www.photonic-tools.de/", summaryKo: "광섬유/포토닉 툴", summaryEn: "Fiber and photonic tools" },
-    { name: "MLOptic", logoUrl: "/makers/mloptic.png", website: "https://www.mloptic.com/", summaryKo: "정밀 광학 코팅", summaryEn: "Precision optical coating" },
-  ],
-  "beam-delivery": [
-    { name: "Cailabs", logoUrl: "/makers/cailabs.png", website: "https://www.cailabs.com/", summaryKo: "빔 전송 및 형상 제어", summaryEn: "Beam delivery and shaping" },
-    { name: "PowerPhotonic", logoUrl: "/makers/powerphotonic.png", website: "https://www.powerphotonic.com/", summaryKo: "빔 딜리버리 광학", summaryEn: "Beam delivery optics" },
-    { name: "ULO Optics", logoUrl: "/makers/ulo-optics.png", website: "https://www.ulooptics.com/", summaryKo: "빔 익스팬더/렌즈", summaryEn: "Beam expanders and lenses" },
-  ],
 };
 
 export async function generateMetadata({
@@ -110,7 +69,7 @@ export default async function ProductDetailPage({
   const heroEyebrow = locale === "ko" ? product.heroEyebrowKo || "Product" : product.heroEyebrowEn || "Product";
   const heroBgImage = product.heroBgImageUrl || "/subpage-products-laser-bg.png";
   const referenceMeta = productReferenceMeta[slug];
-  const makers = productCategoryMakers[slug] ?? [];
+  const makers = await getProductMakersByProductSlug(slug);
 
   return (
     <div className={`productsPage productCategoryPage productCategoryPage-${slug}`}>
@@ -133,13 +92,13 @@ export default async function ProductDetailPage({
 
         <section className="productMakerGrid" aria-label={locale === "ko" ? "제조사 목록" : "Manufacturer list"}>
           {makers.map((maker) => (
-            <a key={maker.name} href={maker.website} target="_blank" rel="noreferrer" className="productMakerCard">
+            <Link key={maker.slug} href={`/${locale}/products/${slug}/${maker.slug}`} className="productMakerCard">
               <span className="productMakerLogo">
                 <Image src={maker.logoUrl} alt={maker.name} fill sizes="(max-width: 760px) 50vw, 220px" />
               </span>
               <strong>{maker.name}</strong>
               <em>{locale === "ko" ? maker.summaryKo : maker.summaryEn}</em>
-            </a>
+            </Link>
           ))}
         </section>
 

@@ -3,7 +3,9 @@
 import { useState } from "react";
 
 import {
+  deleteManufacturerLogo,
   restoreHeroImage,
+  saveManufacturerLogo,
   updateHeroSection,
   updateSeriesCardImage,
   updateSeriesSection,
@@ -66,6 +68,15 @@ type SeriesProductData = {
   displayOrder: number;
 };
 
+type ManufacturerLogoData = {
+  id: number;
+  name: string;
+  logoUrl: string;
+  href: string | null;
+  displayOrder: number;
+  published: boolean;
+};
+
 const defaultProductImageUrls: Record<string, string> = {
   laser: "/product-placeholder.svg",
   "laser-scanner": "/product-placeholder.svg",
@@ -84,6 +95,7 @@ const homeTabItems = [
   { key: "hero", label: "Hero" },
   { key: "story", label: "Story" },
   { key: "series", label: "Series" },
+  { key: "flow", label: "Flow Logos" },
   { key: "history", label: "History" },
   { key: "seo", label: "SEO" },
   { key: "subhero", label: "Sub Hero" },
@@ -93,10 +105,12 @@ export function AdminHomeTabs({
   siteConfig,
   pageHeroConfigs,
   products,
+  manufacturerLogos,
 }: {
   siteConfig: SiteConfigData;
   pageHeroConfigs: PageHeroConfigData[];
   products: SeriesProductData[];
+  manufacturerLogos: ManufacturerLogoData[];
 }) {
   const recentHistory = siteConfig.heroImageHistory.slice(0, 5);
   const [activeKey, setActiveKey] = useState<(typeof homeTabItems)[number]["key"]>("hero");
@@ -124,7 +138,7 @@ export function AdminHomeTabs({
           <div className="lumosAdminSectionHead">
             <div>
               <h2>Hero Section</h2>
-              <p>현재 Hero는 고정 i18n 카피와 레이아웃을 사용합니다. 이 탭에서는 대표 이미지만 관리합니다.</p>
+              <p>메인 첫 섹션의 대표 이미지와 문구를 관리합니다.</p>
             </div>
           </div>
           <form action={updateHeroSection} className="lumosAdminForm">
@@ -329,7 +343,7 @@ export function AdminHomeTabs({
             <div className="lumosAdminSectionHead">
               <div>
                 <h3>Series Showcase Images</h3>
-                <p>각 제품 카드의 대표 이미지를 관리합니다. 카드 소개문구와 키워드는 현재 코드 기준으로 고정되어 있습니다.</p>
+                <p>각 제품 카드의 대표 이미지를 관리합니다. 제품명과 소개 문구는 Product 관리의 제품명·요약 문구를 사용합니다.</p>
               </div>
             </div>
             <div className="lumosAdminSeriesGrid">
@@ -374,6 +388,106 @@ export function AdminHomeTabs({
                 </div>
               ))}
             </div>
+          </div>
+        </section>
+      ) : null}
+
+      {activeKey === "flow" ? (
+        <section className="lumosAdminSectionCard">
+          <div className="lumosAdminSectionHead">
+            <div>
+              <h2>Flow Logo Bar</h2>
+              <p>메인 하단에 흘러가는 제조사 로고, 링크, 노출 순서를 관리합니다.</p>
+            </div>
+          </div>
+          <div className="lumosAdminSeriesManager">
+            <div className="lumosAdminSectionHead">
+              <div>
+                <h3>새 제조사 로고 추가</h3>
+                <p>이미지는 public 경로 또는 외부 이미지 URL을 입력합니다.</p>
+              </div>
+            </div>
+            <form action={saveManufacturerLogo} className="lumosAdminForm">
+              <input type="hidden" name="id" value="0" />
+              <div className="lumosAdminFormGrid">
+                <label className="field">
+                  <span>제조사명</span>
+                  <input name="name" />
+                </label>
+                <label className="field">
+                  <span>Logo Image URL</span>
+                  <input name="logoUrl" placeholder="/makers/example.png" />
+                </label>
+                <label className="field">
+                  <span>Link URL</span>
+                  <input name="href" placeholder="https://example.com" />
+                </label>
+                <label className="field">
+                  <span>순서</span>
+                  <input name="displayOrder" type="number" defaultValue={manufacturerLogos.length + 1} />
+                </label>
+              </div>
+              <label className="adminInlineCheck">
+                <input type="checkbox" name="published" defaultChecked />
+                <span>노출</span>
+              </label>
+              <button type="submit" className="lumosAdminPrimaryButton">
+                로고 추가
+              </button>
+            </form>
+          </div>
+
+          <div className="lumosAdminSeriesGrid">
+            {manufacturerLogos.map((logo) => (
+              <div key={logo.id} className="lumosAdminSeriesCard">
+                <div className="lumosAdminAssetPreview">
+                  <div className="lumosAdminAssetPreviewHead">
+                    <strong>{logo.name}</strong>
+                    <span>{logo.logoUrl}</span>
+                  </div>
+                  <div className="lumosAdminAssetPreviewFrame">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={logo.logoUrl} alt={logo.name} className="lumosAdminAssetPreviewImage" />
+                  </div>
+                </div>
+                <form action={saveManufacturerLogo} className="lumosAdminForm">
+                  <input type="hidden" name="id" value={logo.id} />
+                  <div className="lumosAdminFormGrid">
+                    <label className="field">
+                      <span>제조사명</span>
+                      <input name="name" defaultValue={logo.name} />
+                    </label>
+                    <label className="field">
+                      <span>Logo Image URL</span>
+                      <input name="logoUrl" defaultValue={logo.logoUrl} />
+                    </label>
+                    <label className="field">
+                      <span>Link URL</span>
+                      <input name="href" defaultValue={logo.href ?? ""} />
+                    </label>
+                    <label className="field">
+                      <span>순서</span>
+                      <input name="displayOrder" type="number" defaultValue={logo.displayOrder} />
+                    </label>
+                  </div>
+                  <label className="adminInlineCheck">
+                    <input type="checkbox" name="published" defaultChecked={logo.published} />
+                    <span>노출</span>
+                  </label>
+                  <div className="lumosAdminActionRow">
+                    <button type="submit" className="lumosAdminPrimaryButton">
+                      저장
+                    </button>
+                  </div>
+                </form>
+                <form action={deleteManufacturerLogo}>
+                  <input type="hidden" name="id" value={logo.id} />
+                  <button type="submit" className="lumosAdminGhostButton">
+                    삭제
+                  </button>
+                </form>
+              </div>
+            ))}
           </div>
         </section>
       ) : null}

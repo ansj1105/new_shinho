@@ -222,7 +222,6 @@ export function CompanyPartnersSection({ locale, partners }: { locale: Locale; p
       <div className="container">
         <div className="companyPartnerSurface">
           <div className="companyPartnerIntroBlock">
-            <span>{isKo ? "PARTNER NETWORK" : "PARTNER NETWORK"}</span>
             <h2>{isKo ? "파트너사 소개" : "Partner Network"}</h2>
             <p>
               {isKo

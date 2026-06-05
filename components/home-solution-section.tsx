@@ -12,26 +12,12 @@ type SolutionItem = {
   imageUrl: string | null;
 };
 
-const makers = [
-  { name: "Spark Lasers", logoUrl: "/makers/spark-lasers.png", href: "https://spark-lasers.com/" },
-  { name: "Iradion", logoUrl: "/makers/iradion.png", href: "https://iradionlaser.com/" },
-  { name: "MLase", logoUrl: "/makers/mlase.png", href: "https://mlase.com/" },
-  { name: "Coherent", logoUrl: "/makers/coherent.png", href: "https://www.coherent.com/ko" },
-  { name: "SemiNex", logoUrl: "/makers/seminex.png", href: "https://seminex.com/" },
-  { name: "Monocrom", logoUrl: "/makers/monocrom.png", href: "https://monocrom.com/" },
-  { name: "Optical Engines", logoUrl: "/makers/optical-engines.webp", href: "https://opticalenginesinc.com/" },
-  { name: "SCANLAB", logoUrl: "/makers/scanlab.jpg", href: "https://www.scanlab.de/ko" },
-  { name: "LaserPoint", logoUrl: "/makers/laserpoint.png", href: "https://www.laserpoint.eu/" },
-  { name: "LUMOS", logoUrl: "/makers/lumos.png", href: "https://www.lumosity.co.kr/" },
-  { name: "AdlOptica", logoUrl: "/makers/adloptica.webp", href: "https://www.adloptica.com/" },
-  { name: "Cailabs", logoUrl: "/makers/cailabs.png", href: "https://www.cailabs.com/" },
-  { name: "PowerPhotonic", logoUrl: "/makers/powerphotonic.png", href: "https://www.powerphotonic.com/" },
-  { name: "Optoman", logoUrl: "/makers/optoman.png", href: "https://www.optoman.com/" },
-  { name: "ULO Optics", logoUrl: "/makers/ulo-optics-black.jpg", href: "https://www.ulooptics.com/" },
-  { name: "Zenops", logoUrl: "/makers/zenops.png", href: "https://zenops.co.kr/default/main/main.php" },
-  { name: "Photonic Tools", logoUrl: "/makers/photonic-tools.png", href: "https://www.photonic-tools.de/" },
-  { name: "MLOptic", logoUrl: "/makers/mloptic.png", href: "https://www.mloptic.com/" },
-];
+type ManufacturerLogoItem = {
+  id: number;
+  name: string;
+  logoUrl: string;
+  href: string | null;
+};
 
 export function HomeSolutionSection({
   locale,
@@ -40,6 +26,7 @@ export function HomeSolutionSection({
   solutions,
   contactTitle,
   contactLead,
+  manufacturerLogos,
 }: {
   locale: Locale;
   title?: string | null;
@@ -47,6 +34,7 @@ export function HomeSolutionSection({
   solutions: SolutionItem[];
   contactTitle?: string | null;
   contactLead?: string | null;
+  manufacturerLogos: ManufacturerLogoItem[];
 }) {
   const isKo = locale === "ko";
   const leadHtml = resourceBodyToHtml(
@@ -134,11 +122,11 @@ export function HomeSolutionSection({
               ‹
             </button>
             <div className="makerMarqueeTrack">
-              {[...makers, ...makers].map((maker, index) => (
+              {[...manufacturerLogos, ...manufacturerLogos].map((maker, index) => (
                 <a
-                  key={`${maker.name}-${index}`}
+                  key={`${maker.id}-${index}`}
                   className="makerLogoBox"
-                  href={maker.href}
+                  href={maker.href || "#"}
                   target="_blank"
                   rel="noreferrer"
                   aria-label={maker.name}

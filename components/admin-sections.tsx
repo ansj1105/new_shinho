@@ -43,6 +43,7 @@ export function HomeAdminSection({
   siteConfig,
   pageHeroConfigs,
   products,
+  manufacturerLogos,
 }: {
   siteConfig: {
     id: number;
@@ -93,8 +94,23 @@ export function HomeAdminSection({
     imageUrl: string | null;
     displayOrder: number;
   }>;
+  manufacturerLogos: Array<{
+    id: number;
+    name: string;
+    logoUrl: string;
+    href: string | null;
+    displayOrder: number;
+    published: boolean;
+  }>;
 }) {
-  return <AdminHomeTabs siteConfig={siteConfig} pageHeroConfigs={pageHeroConfigs} products={products} />;
+  return (
+    <AdminHomeTabs
+      siteConfig={siteConfig}
+      pageHeroConfigs={pageHeroConfigs}
+      products={products}
+      manufacturerLogos={manufacturerLogos}
+    />
+  );
 }
 
 export function ApplicationsAdminSection({
@@ -110,6 +126,19 @@ export function ApplicationsAdminSection({
     summaryEn: string;
     bulletsKo: unknown;
     bulletsEn: unknown;
+    detailTitleKo: string | null;
+    detailTitleEn: string | null;
+    detailBodyKo: string | null;
+    detailBodyEn: string | null;
+    detailImageUrl: string | null;
+    detailBenefitsKo: unknown;
+    detailBenefitsEn: unknown;
+    detailUseCasesKo: unknown;
+    detailUseCasesEn: unknown;
+    detailModulesKo: unknown;
+    detailModulesEn: unknown;
+    detailCtaKo: string | null;
+    detailCtaEn: string | null;
     imageUrl: string | null;
     published: boolean;
   }>;
@@ -150,6 +179,20 @@ export function ProductsAdminSection({
     seoDescriptionKo: string | null;
     seoDescriptionEn: string | null;
     published: boolean;
+    makers: Array<{
+      id: number;
+      productId: number;
+      slug: string;
+      name: string;
+      logoUrl: string;
+      website: string | null;
+      summaryKo: string;
+      summaryEn: string;
+      descriptionKo: string;
+      descriptionEn: string;
+      displayOrder: number;
+      published: boolean;
+    }>;
     documents: Array<{
       id: number;
       productId: number;

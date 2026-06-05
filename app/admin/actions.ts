@@ -451,6 +451,83 @@ export async function updateSeriesCardImage(formData: FormData) {
   revalidateAdminPages();
 }
 
+function parseSolutionModuleArray(value: FormDataEntryValue | null) {
+  return String(value ?? "")
+    .split("\n")
+    .map((line) => line.trim())
+    .filter(Boolean)
+    .map((line) => {
+      const [title, image, ...bodyParts] = line.split("|");
+      return {
+        title: title?.trim() ?? "",
+        image: image?.trim() ?? "",
+        body: bodyParts.join("|").trim(),
+      };
+    })
+    .filter((item) => item.title && item.body);
+}
+
+export async function saveManufacturerLogo(formData: FormData) {
+  const id = Number(formData.get("id") ?? 0);
+  const data = {
+    name: String(formData.get("name") ?? "").trim(),
+    logoUrl: String(formData.get("logoUrl") ?? "").trim(),
+    href: String(formData.get("href") ?? "").trim() || null,
+    displayOrder: Number(formData.get("displayOrder") ?? 0),
+    published: parseBoolean(formData.get("published")),
+  };
+
+  if (!data.name || !data.logoUrl) {
+    return;
+  }
+
+  if (id > 0) {
+    await prisma.manufacturerLogo.update({
+      where: { id },
+      data,
+    });
+  } else {
+    await prisma.manufacturerLogo.create({ data });
+  }
+
+  revalidatePublicPages();
+  revalidateAdminPages();
+}
+
+async function revalidateProductMakerPages(productId: number, makerSlug?: string | null) {
+  const product = await prisma.product.findUnique({
+    where: { id: productId },
+    select: { slug: true },
+  });
+
+  revalidatePath("/ko/products");
+  revalidatePath("/en/products");
+
+  if (product?.slug) {
+    revalidatePath(`/ko/products/${product.slug}`);
+    revalidatePath(`/en/products/${product.slug}`);
+
+    if (makerSlug) {
+      revalidatePath(`/ko/products/${product.slug}/${makerSlug}`);
+      revalidatePath(`/en/products/${product.slug}/${makerSlug}`);
+    }
+  }
+
+  revalidateAdminPages();
+}
+
+export async function deleteManufacturerLogo(formData: FormData) {
+  const id = Number(formData.get("id") ?? 0);
+
+  if (!id) {
+    return;
+  }
+
+  await prisma.manufacturerLogo.delete({ where: { id } });
+  revalidatePublicPages();
+  revalidateAdminPages();
+}
+
 export async function restoreHeroImage(formData: FormData) {
   const imageUrl = String(formData.get("imageUrl") ?? "").trim();
 
@@ -480,6 +557,19 @@ export async function saveApplication(formData: FormData) {
     imageUrl: String(formData.get("imageUrl") ?? "") || null,
     bulletsKo: parseTextArray(formData.get("bulletsKo")),
     bulletsEn: parseTextArray(formData.get("bulletsEn")),
+    detailTitleKo: String(formData.get("detailTitleKo") ?? "").trim() || null,
+    detailTitleEn: String(formData.get("detailTitleEn") ?? "").trim() || null,
+    detailBodyKo: String(formData.get("detailBodyKo") ?? "").trim() || null,
+    detailBodyEn: String(formData.get("detailBodyEn") ?? "").trim() || null,
+    detailImageUrl: String(formData.get("detailImageUrl") ?? "").trim() || null,
+    detailBenefitsKo: parseTextArray(formData.get("detailBenefitsKo")),
+    detailBenefitsEn: parseTextArray(formData.get("detailBenefitsEn")),
+    detailUseCasesKo: parseTextArray(formData.get("detailUseCasesKo")),
+    detailUseCasesEn: parseTextArray(formData.get("detailUseCasesEn")),
+    detailModulesKo: parseSolutionModuleArray(formData.get("detailModulesKo")),
+    detailModulesEn: parseSolutionModuleArray(formData.get("detailModulesEn")),
+    detailCtaKo: String(formData.get("detailCtaKo") ?? "").trim() || null,
+    detailCtaEn: String(formData.get("detailCtaEn") ?? "").trim() || null,
     sortOrder: Number(formData.get("sortOrder") ?? 0),
     published: parseBoolean(formData.get("published")),
   };
@@ -713,6 +803,67 @@ export async function deleteProduct(formData: FormData) {
   await prisma.product.delete({ where: { id } });
   revalidatePublicPages();
   revalidateAdminPages();
+}
+
+export async function saveProductMaker(formData: FormData) {
+  const id = Number(formData.get("id") ?? 0);
+  const productId = Number(formData.get("productId") ?? 0);
+
+  if (!productId) {
+    throw new Error("Product maker requires a product.");
+  }
+
+  const data = {
+    productId,
+    slug: String(formData.get("slug") ?? "").trim(),
+    name: String(formData.get("name") ?? "").trim(),
+    logoUrl: String(formData.get("logoUrl") ?? "").trim(),
+    website: String(formData.get("website") ?? "").trim() || null,
+    summaryKo: String(formData.get("summaryKo") ?? ""),
+    summaryEn: String(formData.get("summaryEn") ?? ""),
+    descriptionKo: String(formData.get("descriptionKo") ?? ""),
+    descriptionEn: String(formData.get("descriptionEn") ?? ""),
+    displayOrder: Number(formData.get("displayOrder") ?? 0),
+    published: parseBoolean(formData.get("published")),
+  };
+
+  if (!data.slug || !data.name || !data.logoUrl) {
+    throw new Error("Product maker requires slug, name, and logo.");
+  }
+
+  if (id > 0) {
+    await prisma.productMaker.update({
+      where: { id },
+      data,
+    });
+  } else {
+    await prisma.productMaker.create({ data });
+  }
+
+  await revalidateProductMakerPages(productId, data.slug);
+}
+
+export async function deleteProductMaker(formData: FormData) {
+  const id = Number(formData.get("id") ?? 0);
+
+  if (!id) {
+    return;
+  }
+
+  const existing = await prisma.productMaker.findUnique({
+    where: { id },
+    select: {
+      productId: true,
+      slug: true,
+    },
+  });
+
+  if (!existing) {
+    return;
+  }
+
+  await prisma.productMaker.delete({ where: { id } });
+  await revalidateProductMakerPages(existing.productId, existing.slug);
 }
 
 export async function saveProductDocument(formData: FormData) {
