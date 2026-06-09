@@ -2202,6 +2202,23 @@ select {
   line-height: 1.6;
 }
 
+.adminImageField {
+  align-content: start;
+}
+
+.adminImageField label {
+  display: grid;
+  gap: 8px;
+}
+
+.adminImageField input[type="file"] {
+  padding: 11px 12px;
+}
+
+.adminImageField .adminHint {
+  margin: 0;
+}
+
 .lumosAdminEditorPanel {
   display: grid;
   gap: 16px;

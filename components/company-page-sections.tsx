@@ -172,6 +172,7 @@ export function CompanyCeoVisionSections({
         <div className="container">
           <div className="companyHistorySurface companyCeoSurface">
             <div className="companyCeoIntroLabel" aria-hidden="true" />
+            <div className="companyCeoImagePanel" aria-hidden="true" />
             <div className="companyCeoCopyPanel">
               <div className="companyHistoryHeading">
                 <h1 className="companyHistoryTitle">{historyTitle}</h1>
@@ -182,7 +183,6 @@ export function CompanyCeoVisionSections({
               </div>
               <div className="companyHistoryBody" dangerouslySetInnerHTML={{ __html: historyBodyHtml }} />
             </div>
-            <div className="companyCeoImagePanel" aria-hidden="true" />
           </div>
         </div>
       </section>

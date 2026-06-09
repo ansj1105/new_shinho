@@ -9,6 +9,7 @@ import {
   saveDistributorRegion,
   saveDistributorSettings,
 } from "@/app/admin/actions";
+import { AdminImageField } from "@/components/admin-image-field";
 
 type DistributorPartnerItem = {
   id: number;
@@ -79,10 +80,12 @@ export function AdminDistributorsTabs({
               )}
             </div>
           </div>
-          <label className="field">
-            <span>Map Image URL</span>
-            <input name="mapImageUrl" defaultValue={settings.mapImageUrl ?? ""} />
-          </label>
+          <AdminImageField
+            label="Map Image URL"
+            urlName="mapImageUrl"
+            uploadName="mapImageUpload"
+            defaultValue={settings.mapImageUrl}
+          />
           <button type="submit" className="lumosAdminPrimaryButton">
             지도 이미지 저장
           </button>
@@ -289,10 +292,13 @@ function PartnerForm({
           <span>Legal Name</span>
           <input name="legalName" defaultValue={partner?.legalName ?? ""} />
         </label>
-        <label className="field">
-          <span>Logo URL</span>
-          <input name="logoUrl" defaultValue={partner?.logoUrl ?? ""} />
-        </label>
+        <AdminImageField
+          label="Logo URL"
+          urlName="logoUrl"
+          uploadName="logoUpload"
+          defaultValue={partner?.logoUrl}
+          placeholder="/contact/distributor-logo.png"
+        />
       </div>
       <div className="lumosAdminFormGrid">
         <label className="field lumosAdminEditorField">

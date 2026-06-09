@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 
 import { savePageHeroConfig } from "@/app/admin/actions";
+import { AdminImageField } from "@/components/admin-image-field";
 
 type PageHeroConfigItem = {
   id: number;
@@ -92,13 +93,13 @@ export function AdminPageHeroTabs({
           </div>
         </div>
         <div className="lumosAdminFormGrid">
-          <label className="field">
-            <span>Background Image URL</span>
-            <input
-              name="backgroundImageUrl"
-              defaultValue={activeConfig.backgroundImageUrl ?? ""}
-            />
-          </label>
+          <AdminImageField
+            label="Background Image URL"
+            urlName="backgroundImageUrl"
+            uploadName="backgroundImageUpload"
+            defaultValue={activeConfig.backgroundImageUrl}
+            placeholder="/subpage-contact-bg.png"
+          />
           <label className="field">
             <span>Background Opacity</span>
             <input

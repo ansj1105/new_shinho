@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 
 import { deleteApplication, saveApplication } from "@/app/admin/actions";
+import { AdminImageField } from "@/components/admin-image-field";
 import { AdminRichTextEditor } from "@/components/admin-rich-text-editor";
 import { siteUrl } from "@/lib/site";
 
@@ -132,10 +133,7 @@ export function AdminApplicationsTabs({
                 <span>Sort Order</span>
                 <input name="sortOrder" type="number" defaultValue={99} />
               </label>
-              <label className="field">
-                <span>Image URL</span>
-                <input name="imageUrl" />
-              </label>
+              <AdminImageField label="Image URL" urlName="imageUrl" uploadName="imageUpload" />
             </div>
             <p className="adminHint">
               Image URL을 교체하면 응용분야 페이지의 대표 이미지가 변경됩니다.
@@ -183,10 +181,11 @@ export function AdminApplicationsTabs({
                   <span>Detail Title EN</span>
                   <input name="detailTitleEn" />
                 </label>
-                <label className="field">
-                  <span>Detail Image URL</span>
-                  <input name="detailImageUrl" />
-                </label>
+                <AdminImageField
+                  label="Detail Image URL"
+                  urlName="detailImageUrl"
+                  uploadName="detailImageUpload"
+                />
                 <label className="field">
                   <span>CTA KO</span>
                   <input name="detailCtaKo" />
@@ -298,10 +297,12 @@ export function AdminApplicationsTabs({
                 <span>Sort Order</span>
                 <input name="sortOrder" type="number" defaultValue={activeApplication.sortOrder} />
               </label>
-              <label className="field">
-                <span>Image URL</span>
-                <input name="imageUrl" defaultValue={activeApplication.imageUrl ?? ""} />
-              </label>
+              <AdminImageField
+                label="Image URL"
+                urlName="imageUrl"
+                uploadName="imageUpload"
+                defaultValue={activeApplication.imageUrl}
+              />
             </div>
             <p className="adminHint">
               Image URL을 교체하면 응용분야 페이지의 대표 이미지가 변경됩니다.
@@ -349,10 +350,12 @@ export function AdminApplicationsTabs({
                   <span>Detail Title EN</span>
                   <input name="detailTitleEn" defaultValue={activeApplication.detailTitleEn ?? ""} />
                 </label>
-                <label className="field">
-                  <span>Detail Image URL</span>
-                  <input name="detailImageUrl" defaultValue={activeApplication.detailImageUrl ?? ""} />
-                </label>
+                <AdminImageField
+                  label="Detail Image URL"
+                  urlName="detailImageUrl"
+                  uploadName="detailImageUpload"
+                  defaultValue={activeApplication.detailImageUrl}
+                />
                 <label className="field">
                   <span>CTA KO</span>
                   <input name="detailCtaKo" defaultValue={activeApplication.detailCtaKo ?? ""} />

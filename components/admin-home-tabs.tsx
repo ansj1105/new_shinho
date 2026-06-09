@@ -12,6 +12,7 @@ import {
   updateSiteConfig,
   updateStorySection,
 } from "@/app/admin/actions";
+import { AdminImageField } from "@/components/admin-image-field";
 import { AdminPageHeroTabs } from "@/components/admin-page-hero-tabs";
 import { AdminRichTextEditor } from "@/components/admin-rich-text-editor";
 import { siteUrl } from "@/lib/site";
@@ -158,10 +159,13 @@ export function AdminHomeTabs({
               </div>
             </div>
             <div className="lumosAdminFormGrid">
-              <label className="field">
-                <span>Hero Image URL</span>
-                <input name="heroImageUrl" defaultValue={siteConfig.heroImageUrl ?? ""} />
-              </label>
+              <AdminImageField
+                label="Hero Image URL"
+                urlName="heroImageUrl"
+                uploadName="heroImageUpload"
+                defaultValue={siteConfig.heroImageUrl}
+                placeholder="/hero-main-laser.png"
+              />
               <AdminRichTextEditor name="heroTitleKo" label="Hero Title KO" defaultValue={siteConfig.heroTitleKo} />
               <AdminRichTextEditor name="heroTitleEn" label="Hero Title EN" defaultValue={siteConfig.heroTitleEn} />
               <AdminRichTextEditor
@@ -369,10 +373,13 @@ export function AdminHomeTabs({
                   </div>
                   <form action={updateSeriesCardImage} className="lumosAdminForm">
                     <input type="hidden" name="id" value={product.id} />
-                    <label className="field">
-                      <span>Series Image URL</span>
-                      <input name="imageUrl" defaultValue={resolveProductImageUrl(product)} />
-                    </label>
+                    <AdminImageField
+                      label="Series Image URL"
+                      urlName="imageUrl"
+                      uploadName="imageUpload"
+                      defaultValue={resolveProductImageUrl(product)}
+                      placeholder="/product-placeholder.svg"
+                    />
                     <div className="lumosAdminActionRow">
                       <a
                         href="/asdasddfg/admin/products"
@@ -414,10 +421,12 @@ export function AdminHomeTabs({
                   <span>제조사명</span>
                   <input name="name" />
                 </label>
-                <label className="field">
-                  <span>Logo Image URL</span>
-                  <input name="logoUrl" placeholder="/makers/example.png" />
-                </label>
+                <AdminImageField
+                  label="Logo Image URL"
+                  urlName="logoUrl"
+                  uploadName="logoUpload"
+                  placeholder="/makers/example.png"
+                />
                 <label className="field">
                   <span>Link URL</span>
                   <input name="href" placeholder="https://example.com" />
@@ -457,10 +466,13 @@ export function AdminHomeTabs({
                       <span>제조사명</span>
                       <input name="name" defaultValue={logo.name} />
                     </label>
-                    <label className="field">
-                      <span>Logo Image URL</span>
-                      <input name="logoUrl" defaultValue={logo.logoUrl} />
-                    </label>
+                    <AdminImageField
+                      label="Logo Image URL"
+                      urlName="logoUrl"
+                      uploadName="logoUpload"
+                      defaultValue={logo.logoUrl}
+                      placeholder="/makers/example.png"
+                    />
                     <label className="field">
                       <span>Link URL</span>
                       <input name="href" defaultValue={logo.href ?? ""} />

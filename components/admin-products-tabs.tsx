@@ -10,6 +10,7 @@ import {
   saveProductDocument,
   saveProductMaker,
 } from "@/app/admin/actions";
+import { AdminImageField } from "@/components/admin-image-field";
 import { siteUrl } from "@/lib/site";
 
 type ProductItem = {
@@ -193,10 +194,7 @@ export function AdminProductsTabs({
                 <span>Display Order</span>
                 <input name="displayOrder" type="number" defaultValue={products.length + 1} />
               </label>
-              <label className="field">
-                <span>Image URL</span>
-                <input name="imageUrl" />
-              </label>
+              <AdminImageField label="Image URL" urlName="imageUrl" uploadName="imageUpload" />
             </div>
             <p className="adminHint">
               Image URL은 제품 목록, 메인 제품 영역, 제품 상세 기본 이미지에 사용됩니다.
@@ -242,10 +240,11 @@ export function AdminProductsTabs({
               </label>
             </div>
             <div className="lumosAdminFormGrid">
-              <label className="field">
-                <span>Sub Hero BG Image URL</span>
-                <input name="heroBgImageUrl" />
-              </label>
+              <AdminImageField
+                label="Sub Hero BG Image URL"
+                urlName="heroBgImageUrl"
+                uploadName="heroBgImageUpload"
+              />
               <label className="field">
                 <span>Sub Hero BG Opacity</span>
                 <input name="heroBgOpacity" type="number" min={0} max={1} step={0.05} defaultValue={0.9} />
@@ -368,10 +367,12 @@ export function AdminProductsTabs({
                 <span>Display Order</span>
                 <input name="displayOrder" type="number" defaultValue={activeProduct.displayOrder} />
               </label>
-              <label className="field">
-                <span>Image URL</span>
-                <input name="imageUrl" defaultValue={activeProductImageUrl} />
-              </label>
+              <AdminImageField
+                label="Image URL"
+                urlName="imageUrl"
+                uploadName="imageUpload"
+                defaultValue={activeProductImageUrl}
+              />
             </div>
             <div className="lumosAdminAssetPreview lumosAdminProductImagePreview">
               <div className="lumosAdminAssetPreviewHead">
@@ -436,10 +437,12 @@ export function AdminProductsTabs({
               </label>
             </div>
             <div className="lumosAdminFormGrid">
-              <label className="field">
-                <span>Sub Hero BG Image URL</span>
-                <input name="heroBgImageUrl" defaultValue={activeProduct.heroBgImageUrl ?? ""} />
-              </label>
+              <AdminImageField
+                label="Sub Hero BG Image URL"
+                urlName="heroBgImageUrl"
+                uploadName="heroBgImageUpload"
+                defaultValue={activeProduct.heroBgImageUrl}
+              />
               <label className="field">
                 <span>Sub Hero BG Opacity</span>
                 <input
@@ -578,10 +581,13 @@ export function AdminProductsTabs({
                           <span>제조사명</span>
                           <input name="name" defaultValue={maker.name} />
                         </label>
-                        <label className="field">
-                          <span>Logo URL</span>
-                          <input name="logoUrl" defaultValue={maker.logoUrl} />
-                        </label>
+                        <AdminImageField
+                          label="Logo URL"
+                          urlName="logoUrl"
+                          uploadName="logoUpload"
+                          defaultValue={maker.logoUrl}
+                          placeholder="/makers/example.png"
+                        />
                         <label className="field">
                           <span>Website</span>
                           <input name="website" defaultValue={maker.website ?? ""} />
@@ -649,10 +655,12 @@ export function AdminProductsTabs({
                   <span>제조사명</span>
                   <input name="name" />
                 </label>
-                <label className="field">
-                  <span>Logo URL</span>
-                  <input name="logoUrl" placeholder="/makers/example.png" />
-                </label>
+                <AdminImageField
+                  label="Logo URL"
+                  urlName="logoUrl"
+                  uploadName="logoUpload"
+                  placeholder="/makers/example.png"
+                />
                 <label className="field">
                   <span>Website</span>
                   <input name="website" />

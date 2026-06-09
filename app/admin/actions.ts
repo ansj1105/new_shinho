@@ -92,6 +92,30 @@ async function storeProductDocumentAttachment(file: File) {
   };
 }
 
+async function storeAdminImage(file: File) {
+  const extension = path.extname(file.name || "").toLowerCase();
+  const safeExtension = extension && extension.length <= 10 ? extension : "";
+  const fileName = `${Date.now()}-${randomUUID()}${safeExtension}`;
+  const targetDir = path.join(process.cwd(), "public", "uploads", "images");
+  const targetPath = path.join(targetDir, fileName);
+
+  await mkdir(targetDir, { recursive: true });
+  const buffer = Buffer.from(await file.arrayBuffer());
+  await writeFile(targetPath, buffer);
+
+  return `/uploads/images/${fileName}`;
+}
+
+async function resolveAdminImageField(formData: FormData, urlFieldName: string, uploadFieldName: string) {
+  const upload = formData.get(uploadFieldName);
+
+  if (isUploadedFile(upload)) {
+    return storeAdminImage(upload);
+  }
+
+  return String(formData.get(urlFieldName) ?? "").trim() || null;
+}
+
 async function removeManagedResourceAttachment(fileUrl: string | null | undefined) {
   if (!fileUrl || !fileUrl.startsWith("/uploads/resources/")) {
     return;
@@ -231,7 +255,7 @@ async function storeHeroHistory(imageUrl: string) {
 
 export async function updateSiteConfig(formData: FormData) {
   const current = await prisma.siteConfig.findUnique({ where: { id: 1 } });
-  const heroImageUrl = String(formData.get("heroImageUrl") ?? "").trim() || null;
+  const heroImageUrl = await resolveAdminImageField(formData, "heroImageUrl", "heroImageUpload");
 
   await prisma.siteConfig.upsert({
     where: { id: 1 },
@@ -302,7 +326,7 @@ export async function updateSiteConfig(formData: FormData) {
 
 export async function updateHeroSection(formData: FormData) {
   const current = await prisma.siteConfig.findUnique({ where: { id: 1 } });
-  const heroImageUrl = String(formData.get("heroImageUrl") ?? "").trim() || null;
+  const heroImageUrl = await resolveAdminImageField(formData, "heroImageUrl", "heroImageUpload");
 
   await prisma.siteConfig.upsert({
     where: { id: 1 },
@@ -443,7 +467,7 @@ export async function updateSeriesCardImage(formData: FormData) {
   await prisma.product.update({
     where: { id },
     data: {
-      imageUrl: String(formData.get("imageUrl") ?? "").trim() || null,
+      imageUrl: await resolveAdminImageField(formData, "imageUrl", "imageUpload"),
     },
   });
 
@@ -469,9 +493,10 @@ function parseSolutionModuleArray(value: FormDataEntryValue | null) {
 
 export async function saveManufacturerLogo(formData: FormData) {
   const id = Number(formData.get("id") ?? 0);
+  const logoUrl = await resolveAdminImageField(formData, "logoUrl", "logoUpload");
   const data = {
     name: String(formData.get("name") ?? "").trim(),
-    logoUrl: String(formData.get("logoUrl") ?? "").trim(),
+    logoUrl: logoUrl ?? "",
     href: String(formData.get("href") ?? "").trim() || null,
     displayOrder: Number(formData.get("displayOrder") ?? 0),
     published: parseBoolean(formData.get("published")),
@@ -548,20 +573,22 @@ export async function restoreHeroImage(formData: FormData) {
 
 export async function saveApplication(formData: FormData) {
   const id = Number(formData.get("id") ?? 0);
+  const imageUrl = await resolveAdminImageField(formData, "imageUrl", "imageUpload");
+  const detailImageUrl = await resolveAdminImageField(formData, "detailImageUrl", "detailImageUpload");
   const data = {
     slug: String(formData.get("slug") ?? ""),
     titleKo: String(formData.get("titleKo") ?? ""),
     titleEn: String(formData.get("titleEn") ?? ""),
     summaryKo: String(formData.get("summaryKo") ?? ""),
     summaryEn: String(formData.get("summaryEn") ?? ""),
-    imageUrl: String(formData.get("imageUrl") ?? "") || null,
+    imageUrl,
     bulletsKo: parseTextArray(formData.get("bulletsKo")),
     bulletsEn: parseTextArray(formData.get("bulletsEn")),
     detailTitleKo: String(formData.get("detailTitleKo") ?? "").trim() || null,
     detailTitleEn: String(formData.get("detailTitleEn") ?? "").trim() || null,
     detailBodyKo: String(formData.get("detailBodyKo") ?? "").trim() || null,
     detailBodyEn: String(formData.get("detailBodyEn") ?? "").trim() || null,
-    detailImageUrl: String(formData.get("detailImageUrl") ?? "").trim() || null,
+    detailImageUrl,
     detailBenefitsKo: parseTextArray(formData.get("detailBenefitsKo")),
     detailBenefitsEn: parseTextArray(formData.get("detailBenefitsEn")),
     detailUseCasesKo: parseTextArray(formData.get("detailUseCasesKo")),
@@ -609,6 +636,7 @@ export async function savePageHeroConfig(formData: FormData) {
     return;
   }
 
+  const backgroundImageUrl = await resolveAdminImageField(formData, "backgroundImageUrl", "backgroundImageUpload");
   const data = {
     eyebrowKo: String(formData.get("eyebrowKo") ?? "").trim(),
     eyebrowEn: String(formData.get("eyebrowEn") ?? "").trim(),
@@ -616,7 +644,7 @@ export async function savePageHeroConfig(formData: FormData) {
     titleEn: String(formData.get("titleEn") ?? "").trim(),
     descriptionKo: String(formData.get("descriptionKo") ?? "").trim(),
     descriptionEn: String(formData.get("descriptionEn") ?? "").trim(),
-    backgroundImageUrl: String(formData.get("backgroundImageUrl") ?? "").trim() || null,
+    backgroundImageUrl,
     backgroundOpacity: parseOptionalNumber(formData.get("backgroundOpacity"), 0.6),
   };
 
@@ -634,8 +662,9 @@ export async function savePageHeroConfig(formData: FormData) {
 }
 
 export async function saveDistributorSettings(formData: FormData) {
+  const mapImageUrl = await resolveAdminImageField(formData, "mapImageUrl", "mapImageUpload");
   const data = {
-    mapImageUrl: String(formData.get("mapImageUrl") ?? "").trim() || null,
+    mapImageUrl,
   };
 
   await prisma.distributorSettings.upsert({
@@ -700,6 +729,7 @@ export async function saveDistributorPartner(formData: FormData) {
     return;
   }
 
+  const logoUrl = await resolveAdminImageField(formData, "logoUrl", "logoUpload");
   const data = {
     regionId,
     countryKo: String(formData.get("countryKo") ?? "").trim(),
@@ -712,7 +742,7 @@ export async function saveDistributorPartner(formData: FormData) {
     telephone: String(formData.get("telephone") ?? "").trim() || null,
     email: String(formData.get("email") ?? "").trim() || null,
     website: String(formData.get("website") ?? "").trim() || null,
-    logoUrl: String(formData.get("logoUrl") ?? "").trim() || null,
+    logoUrl,
     sortOrder: Number(formData.get("sortOrder") ?? 0),
     published: parseBoolean(formData.get("published")),
   };
@@ -748,6 +778,8 @@ export async function deleteDistributorPartner(formData: FormData) {
 
 export async function saveProduct(formData: FormData) {
   const id = Number(formData.get("id") ?? 0);
+  const imageUrl = await resolveAdminImageField(formData, "imageUrl", "imageUpload");
+  const heroBgImageUrl = await resolveAdminImageField(formData, "heroBgImageUrl", "heroBgImageUpload");
 
   const data = {
     slug: String(formData.get("slug") ?? ""),
@@ -760,7 +792,7 @@ export async function saveProduct(formData: FormData) {
     heroTitleEn: String(formData.get("heroTitleEn") ?? "").trim() || null,
     heroLeadKo: String(formData.get("heroLeadKo") ?? "").trim() || null,
     heroLeadEn: String(formData.get("heroLeadEn") ?? "").trim() || null,
-    heroBgImageUrl: String(formData.get("heroBgImageUrl") ?? "").trim() || null,
+    heroBgImageUrl,
     heroBgOpacity: parseOptionalNumber(formData.get("heroBgOpacity"), 0.9),
     summaryKo: String(formData.get("summaryKo") ?? ""),
     summaryEn: String(formData.get("summaryEn") ?? ""),
@@ -772,7 +804,7 @@ export async function saveProduct(formData: FormData) {
     applicationsEn: parseTextArray(formData.get("applicationsEn")),
     specsKo: parseSpecArray(formData.get("specsKo")),
     specsEn: parseSpecArray(formData.get("specsEn")),
-    imageUrl: String(formData.get("imageUrl") ?? "") || null,
+    imageUrl,
     seoTitleKo: String(formData.get("seoTitleKo") ?? "") || null,
     seoTitleEn: String(formData.get("seoTitleEn") ?? "") || null,
     seoDescriptionKo: String(formData.get("seoDescriptionKo") ?? "") || null,
@@ -813,11 +845,12 @@ export async function saveProductMaker(formData: FormData) {
     throw new Error("Product maker requires a product.");
   }
 
+  const logoUrl = await resolveAdminImageField(formData, "logoUrl", "logoUpload");
   const data = {
     productId,
     slug: String(formData.get("slug") ?? "").trim(),
     name: String(formData.get("name") ?? "").trim(),
-    logoUrl: String(formData.get("logoUrl") ?? "").trim(),
+    logoUrl: logoUrl ?? "",
     website: String(formData.get("website") ?? "").trim() || null,
     summaryKo: String(formData.get("summaryKo") ?? ""),
     summaryEn: String(formData.get("summaryEn") ?? ""),
