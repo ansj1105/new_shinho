@@ -43,8 +43,19 @@ export function HomeSolutionSection({
         ? "제품 판매에 머물지 않고 광학 솔루션, 광학 설계, 기구 설계, SW 설계까지 연결하는 산업용 레이저·광학 파트너를 지향합니다."
         : "Beyond product supply, Shinhotek connects selection, engineering review, and application support for industrial laser and optical systems."),
   );
-  const visualItems = solutions.slice(0, 4);
-  const featuredItems = solutions.slice(0, 2);
+  const visibleSolutions = solutions.filter((item) => {
+    const searchable = `${item.slug} ${item.titleKo} ${item.titleEn}`.toLowerCase();
+    return (
+      !searchable.includes("semiconductor") &&
+      !searchable.includes("반도체") &&
+      !searchable.includes("optical-solution") &&
+      !searchable.includes("optical solution") &&
+      !searchable.includes("광학솔루션") &&
+      !searchable.includes("광학 솔루션")
+    );
+  });
+  const visualItems = visibleSolutions.slice(0, 4);
+  const featuredItems = visibleSolutions.slice(0, 2);
 
   return (
     <>
@@ -76,7 +87,6 @@ export function HomeSolutionSection({
             <div className="homeSolutionList">
               {featuredItems.map((item) => (
                 <Link className="homeSolutionListItem" key={item.slug} href={`/${locale}/applications#${item.slug}`}>
-                  <span className="homeSolutionListIcon" aria-hidden="true">⊕</span>
                   <span>
                     <strong>{isKo ? item.titleKo : item.titleEn}</strong>
                     <em>{isKo ? item.summaryKo : item.summaryEn}</em>

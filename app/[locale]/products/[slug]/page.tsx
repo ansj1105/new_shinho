@@ -8,15 +8,6 @@ import { getProductBySlug, getProductMakersByProductSlug } from "@/lib/content";
 import { buildPageMetadata } from "@/lib/seo";
 import type { Locale } from "@/lib/site";
 
-const productReferenceMeta: Record<string, { count: number; labelKo: string; labelEn: string }> = {
-  laser: { count: 8, labelKo: "Laser 제품군", labelEn: "Laser product groups" },
-  "laser-scanner": { count: 1, labelKo: "Laser Scanner 제품군", labelEn: "Laser scanner group" },
-  "laser-metrology": { count: 3, labelKo: "Laser Metrology 제품군", labelEn: "Laser metrology groups" },
-  "optical-solution": { count: 5, labelKo: "Optical Solution 제품군", labelEn: "Optical solution groups" },
-  "coating-solution": { count: 4, labelKo: "Coating Solution 제품군", labelEn: "Coating solution groups" },
-  "beam-delivery": { count: 3, labelKo: "Beam Delivery 제품군", labelEn: "Beam delivery groups" },
-};
-
 export async function generateMetadata({
   params,
 }: {
@@ -68,7 +59,6 @@ export default async function ProductDetailPage({
   const heroLead = locale === "ko" ? product.heroLeadKo || localizedSummary : product.heroLeadEn || localizedSummary;
   const heroEyebrow = locale === "ko" ? product.heroEyebrowKo || "Product" : product.heroEyebrowEn || "Product";
   const heroBgImage = product.heroBgImageUrl || "/subpage-products-laser-bg.png";
-  const referenceMeta = productReferenceMeta[slug];
   const makers = await getProductMakersByProductSlug(slug);
 
   return (
@@ -86,7 +76,6 @@ export default async function ProductDetailPage({
         <section className="productMakerPageHead">
           <h2>{localizedProductName}</h2>
           <p>{localizedSummary}</p>
-          {referenceMeta ? <strong>{locale === "ko" ? referenceMeta.labelKo : referenceMeta.labelEn}</strong> : null}
         </section>
 
         <section className="productMakerGrid" aria-label={locale === "ko" ? "제조사 목록" : "Manufacturer list"}>

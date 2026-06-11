@@ -81,10 +81,6 @@ export default async function ProductMakerDetailPage({
             <p>{makerDescription}</p>
             <dl className="productMakerDetailFacts">
               <div>
-                <dt>{locale === "ko" ? "제품군" : "Product group"}</dt>
-                <dd>{productName}</dd>
-              </div>
-              <div>
                 <dt>{locale === "ko" ? "적용 분야" : "Application"}</dt>
                 <dd>{makerSummary}</dd>
               </div>

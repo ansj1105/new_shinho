@@ -10703,16 +10703,6 @@ body {
   line-height: 1.75;
 }
 
-.productMakerPageHead strong {
-  justify-self: start;
-  margin-top: 8px;
-  padding-top: 12px;
-  border-top: 3px solid var(--sh-cyan);
-  color: var(--sh-blue);
-  font-size: 14px;
-  font-weight: 800;
-}
-
 .productMakerGrid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -11624,7 +11614,7 @@ body {
 }
 
 .productsPage .productsShowcaseHead {
-  max-width: 980px;
+  width: min(100%, 1080px);
   margin-inline: auto;
   border-bottom-color: rgba(255, 255, 255, 0.14);
   text-align: left;
@@ -11714,13 +11704,9 @@ body {
 }
 
 .productCategoryPage .productMakerPageHead {
+  width: min(100%, 1040px);
   margin-inline: auto;
   text-align: left;
-}
-
-.productCategoryPage .productMakerPageHead strong {
-  border-top-color: #ff9d14;
-  color: #ff9d14;
 }
 
 .productCategoryPage .productMakerGrid {
@@ -13422,6 +13408,9 @@ body {
 }
 
 .shell main {
+  --sh-content-max: 1080px;
+  --sh-content-max-narrow: 1040px;
+  --sh-panel-inline: clamp(20px, 3vw, 40px);
   background: #080d12;
 }
 
@@ -13442,6 +13431,34 @@ body {
   .contactSupportGrid
 ) {
   background: #080d12;
+}
+
+.shell main :is(
+  .productsShowcaseHead,
+  .productsShowcase,
+  .solutionPageIntro,
+  .solutionCategoryGrid,
+  .opticalSolutionDetailSection,
+  .contactForm,
+  .contactSupportGrid,
+  .companyHistorySurface,
+  .companyOverviewSurface,
+  .companyPartnerSurface,
+  .resourceDetailLayout,
+  .productMakerPageHead,
+  .productMakerGrid,
+  .productMakerSupport
+) {
+  width: min(100%, var(--sh-content-max));
+  margin-inline: auto;
+}
+
+.shell main :is(.productMakerPageHead, .productMakerGrid, .productMakerSupport) {
+  width: min(100%, var(--sh-content-max-narrow));
+}
+
+.shell main :is(.contactForm, .resourceDetailLayout, .companyHistorySurface, .companyOverviewSurface) {
+  max-width: none;
 }
 
 .shell main :is(
@@ -13472,6 +13489,51 @@ body {
   border-color: rgba(255, 255, 255, 0.14);
   background: #111820;
   color: #edf6fa;
+}
+
+.shell main :is(
+  .productsShowcaseHead,
+  .solutionPageIntro,
+  .productMakerPageHead,
+  .productMakerSupport,
+  .companyHistorySurface,
+  .companyOverviewSurface,
+  .companyPartnerIntroBlock,
+  .companyPartnerLogoWall,
+  .contactForm,
+  .contactSupportCard,
+  .resourceDetailSummary,
+  .resourceDetailContentCard,
+  .resourceAttachmentBox,
+  .directionsTwoCol
+) {
+  padding-inline: var(--sh-panel-inline);
+}
+
+.shell main .solutionPageIntro,
+.shell main .productMakerPageHead,
+.shell main .productsShowcaseHead {
+  max-width: none;
+}
+
+.shell main .solutionCategoryGrid,
+.shell main .opticalSolutionDetailSection {
+  max-width: none;
+}
+
+.shell main .companyPartnerLogoWall {
+  padding-block: clamp(28px, 4vw, 52px);
+}
+
+.shell main .resourceDetailSummary,
+.shell main .resourceDetailContentCard,
+.shell main .contactForm {
+  width: 100%;
+}
+
+.shell main .companyDirectionsSection .directionsTwoCol {
+  width: min(100%, var(--sh-content-max));
+  margin-inline: auto;
 }
 
 .shell main :is(
@@ -13542,6 +13604,28 @@ body {
   .directionsContactRows
 ) {
   color: rgba(237, 246, 250, 0.74);
+}
+
+.shell main :is(
+  .productsShowcaseHead p,
+  .solutionPageIntro p,
+  .productMakerPageHead p,
+  .companyHistoryBody,
+  .companyHistoryBody p,
+  .companyPartnerIntroBlock p,
+  .resourceBodyText,
+  .resourceRichBody
+) {
+  max-width: min(100%, 760px);
+}
+
+.shell main .solutionPageIntro p,
+.shell main .productMakerPageHead p {
+  margin-left: 0;
+}
+
+.shell main .resourceDetailBody {
+  max-width: 100%;
 }
 
 .shell main :is(
@@ -13992,4 +14076,10 @@ body {
 .shell main .resourcesRow:hover .resourcesRowTitle,
 .shell main .resourcesRow:focus-visible .resourcesRowTitle {
   color: #58c6e4;
+}
+
+.shell main .eyebrow,
+.shell main .companyPrinciplesSection,
+.shell main .companyPrinciplesSurface {
+  display: none !important;
 }

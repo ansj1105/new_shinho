@@ -105,10 +105,6 @@ export function CompanyOverviewSection({
         <div className="companyHistorySurface companyOverviewSurface">
           <div className="companyHistoryHeading">
             <h1 className="companyHistoryTitle">{isKo ? "회사소개" : "Company"}</h1>
-            <span className="companyHistoryKicker">
-              <span className="companyHistoryKickerMark" />
-              ABOUT SHINHOTEK
-            </span>
           </div>
           <div className="companyHistoryBody">
             <strong className="companyOverviewBrand">{brandTitle}</strong>
@@ -151,66 +147,23 @@ export function CompanyCeoVisionSections({
   const isKo = locale === "ko";
   const historyTitle = localizedField(companyContent, "historyTitle", locale);
   const historyBody = localizedField(companyContent, "historyBody", locale);
-  const brandTitle = localizedField(companyContent, "brandTitle", locale);
-  const brandLead = localizedField(companyContent, "brandLead", locale);
   const historyBodyHtml = resourceBodyToHtml(historyBody);
-  const brandLeadHtml = resourceBodyToHtml(brandLead);
-  const companyPrinciples = [
-    {
-      heading: localizedField(companyContent, "visionTitle", locale),
-      body: localizedField(companyContent, "visionBody", locale),
-    },
-    {
-      heading: localizedField(companyContent, "goalTitle", locale),
-      body: localizedField(companyContent, "goalBody", locale),
-    },
-  ];
 
   return (
-    <>
-      <section className="companyHistorySection">
-        <div className="container">
-          <div className="companyHistorySurface companyCeoSurface">
-            <div className="companyCeoIntroLabel" aria-hidden="true" />
-            <div className="companyCeoImagePanel" aria-hidden="true" />
-            <div className="companyCeoCopyPanel">
-              <div className="companyHistoryHeading">
-                <h1 className="companyHistoryTitle">{historyTitle}</h1>
-                <span className="companyHistoryKicker">
-                  <span className="companyHistoryKickerMark" />
-                  CEO MESSAGE
-                </span>
-              </div>
-              <div className="companyHistoryBody" dangerouslySetInnerHTML={{ __html: historyBodyHtml }} />
+    <section className="companyHistorySection">
+      <div className="container">
+        <div className="companyHistorySurface companyCeoSurface">
+          <div className="companyCeoIntroLabel" aria-hidden="true" />
+          <div className="companyCeoImagePanel" aria-hidden="true" />
+          <div className="companyCeoCopyPanel">
+            <div className="companyHistoryHeading">
+              <h1 className="companyHistoryTitle">{historyTitle}</h1>
             </div>
+            <div className="companyHistoryBody" dangerouslySetInnerHTML={{ __html: historyBodyHtml }} />
           </div>
         </div>
-      </section>
-
-      <section className="companyPrinciplesSection">
-        <div className="container">
-          <div className="companyPrinciplesSurface">
-            <div className="companyPrinciplesIntro">
-              <strong className="companyPrinciplesBrand">{brandTitle}</strong>
-              <div className="companyPrinciplesLead" dangerouslySetInnerHTML={{ __html: brandLeadHtml }} />
-            </div>
-
-            <div className="companyPrinciplesTable" role="table" aria-label="SHINHOTEK vision and goal">
-              {companyPrinciples.map((item) => (
-                <div key={item.heading} className="companyPrinciplesColumn" role="rowgroup">
-                  <div className="companyPrinciplesHead" role="row">
-                    <span role="columnheader">{item.heading}</span>
-                  </div>
-                  <div className="companyPrinciplesCell" role="row">
-                    <p role="cell">{item.body}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-    </>
+      </div>
+    </section>
   );
 }
 

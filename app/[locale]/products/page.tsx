@@ -1,4 +1,7 @@
 ﻿import Link from "next/link";
+import { existsSync } from "node:fs";
+import path from "node:path";
+
 import Image from "next/image";
 import type { Metadata } from "next";
 
@@ -130,6 +133,15 @@ export async function generateMetadata({
 }
 
 function getProductShowcaseImage(slug: string, imageUrl?: string | null) {
+  if (imageUrl?.startsWith("/uploads/images/")) {
+    const relativePath = imageUrl.replace(/^\/+/, "");
+    const absolutePath = path.join(process.cwd(), "public", relativePath);
+
+    if (existsSync(absolutePath)) {
+      return imageUrl;
+    }
+  }
+
   return imageUrl || productFallbackImages[slug] || "/product-placeholder.svg";
 }
 
@@ -164,7 +176,6 @@ export default async function ProductsPage({
       />
       <div className="container subpageContent">
         <section className="productsShowcaseHead">
-          <span>PRODUCTS</span>
           <h2>{locale === "ko" ? "제품소개" : "Products"}</h2>
           <p>
             {locale === "ko"

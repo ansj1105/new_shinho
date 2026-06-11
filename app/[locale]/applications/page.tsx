@@ -34,27 +34,6 @@ function textArray(value: unknown) {
   return Array.isArray(value) ? value.map((item) => String(item)).filter(Boolean) : [];
 }
 
-function moduleArray(value: unknown) {
-  if (!Array.isArray(value)) {
-    return [];
-  }
-
-  return value
-    .map((item) => {
-      if (!item || typeof item !== "object") {
-        return null;
-      }
-
-      const moduleItem = item as { title?: unknown; image?: unknown; body?: unknown };
-      const title = String(moduleItem.title ?? "").trim();
-      const image = String(moduleItem.image ?? "").trim();
-      const body = String(moduleItem.body ?? "").trim();
-
-      return title && body ? { title, image, body } : null;
-    })
-    .filter((item): item is { title: string; image: string; body: string } => Boolean(item));
-}
-
 function textField(entry: unknown, key: string) {
   const value = (entry as Record<string, unknown>)[key];
   return typeof value === "string" ? value : "";
@@ -128,8 +107,6 @@ export default async function ApplicationsPage({
       detailBenefitsEn: textArray(valueField(entry, "detailBenefitsEn")),
       detailUseCasesKo: textArray(valueField(entry, "detailUseCasesKo")),
       detailUseCasesEn: textArray(valueField(entry, "detailUseCasesEn")),
-      detailModulesKo: moduleArray(valueField(entry, "detailModulesKo")),
-      detailModulesEn: moduleArray(valueField(entry, "detailModulesEn")),
       detailCtaKo: textField(entry, "detailCtaKo"),
       detailCtaEn: textField(entry, "detailCtaEn"),
     };
@@ -203,7 +180,6 @@ export default async function ApplicationsPage({
           <section id="optical-solution-detail" className="opticalSolutionDetailSection" aria-label={locale === "ko" ? "광학솔루션 상세" : "Optical solution detail"}>
             <div className="projectIntroPanel">
               <div className="projectIntroCopy">
-                <span>{locale === "ko" ? "광학솔루션" : "OPTICAL SOLUTION"}</span>
                 <h2>{locale === "ko" ? opticalSolutionDetail.detailTitleKo : opticalSolutionDetail.detailTitleEn}</h2>
                 {splitApplicationParagraphs(locale === "ko" ? opticalSolutionDetail.detailBodyKo : opticalSolutionDetail.detailBodyEn).map((paragraph, index) => (
                   <p key={`optical-detail-body-${index}`}>{renderApplicationLines(paragraph)}</p>
@@ -238,37 +214,11 @@ export default async function ApplicationsPage({
               </div>
             </div>
 
-            <div className="projectModuleSection">
-              <div className="projectSectionHead">
-                <span>{locale === "ko" ? "구성 모듈" : "Components and modules"}</span>
-                <h2>{locale === "ko" ? "광학솔루션 적용 가능 제품군" : "Product groups for optical solutions"}</h2>
-              </div>
-              <div className="projectModuleGrid">
-                {(locale === "ko" ? opticalSolutionDetail.detailModulesKo : opticalSolutionDetail.detailModulesEn).map((module) => (
-                  <article key={`${module.title}-${module.image}`} className="projectModuleCard">
-                    <div className="projectModuleMedia">
-                      <Image
-                        src={module.image || "/subpage-applications-bg.png"}
-                        alt={module.title}
-                        fill
-                        sizes="(max-width: 760px) 100vw, 280px"
-                      />
-                    </div>
-                    <div className="projectModuleCopy">
-                      <h3>{module.title}</h3>
-                      <p>{module.body}</p>
-                    </div>
-                  </article>
-                ))}
-              </div>
-            </div>
-
             <div className="projectContactBand">
               <div className="projectContactVisual" aria-hidden="true">
                 <Image src="/applications/gallery/automotive-lidar/vcsel-1.png" alt="" fill sizes="220px" />
               </div>
               <div>
-                <span>{locale === "ko" ? "광학솔루션 문의" : "Optical solution inquiry"}</span>
                 <h2>{locale === "ko" ? "적용 조건과 요구사항을 공유해 주세요." : "Share your application requirements."}</h2>
               </div>
               <Link href={`/${locale}/contact/quote`}>{locale === "ko" ? opticalSolutionDetail.detailCtaKo || "문의하기" : opticalSolutionDetail.detailCtaEn || "Contact us"}</Link>
