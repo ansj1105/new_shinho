@@ -92,7 +92,6 @@ export default async function ProductDetailPage({
 
         <section className="productMakerSupport">
           <div>
-            <span>{locale === "ko" ? "제품 선정 지원" : "Selection support"}</span>
             <p>
               {locale === "ko"
                 ? "제조사별 제품 사양과 공정 조건을 검토해 적합한 제품군을 안내합니다."

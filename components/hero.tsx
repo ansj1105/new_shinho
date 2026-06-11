@@ -106,9 +106,7 @@ export function Hero({ locale, heroImageUrl, title, description }: HeroProps) {
           </Link>
         </div>
         <div className="heroVisualPanel" aria-hidden="true">
-          <div className="heroVisualFrame">
-            <Image src="/hero-main-laser.png" alt="" width={420} height={420} priority />
-          </div>
+          <Image src="/hero-main-laser.png" alt="" width={420} height={420} priority />
         </div>
       </div>
     </section>

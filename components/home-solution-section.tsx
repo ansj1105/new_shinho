@@ -55,7 +55,18 @@ export function HomeSolutionSection({
     );
   });
   const visualItems = visibleSolutions.slice(0, 4);
-  const featuredItems = visibleSolutions.slice(0, 2);
+  const featuredItems = visibleSolutions
+    .filter((item) => {
+      const searchable = `${item.slug} ${item.titleKo} ${item.titleEn}`.toLowerCase();
+      return (
+        !searchable.includes("optical-design") &&
+        !searchable.includes("optical design") &&
+        !searchable.includes("광학 설계") &&
+        !searchable.includes("display") &&
+        !searchable.includes("디스플레이")
+      );
+    })
+    .slice(0, 2);
 
   return (
     <>
