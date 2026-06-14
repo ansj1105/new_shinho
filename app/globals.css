@@ -12497,9 +12497,10 @@ body {
 .heroModeSubTitle {
   margin: 0;
   color: #e8edf7;
-  font-size: clamp(26px, 2.45vw, 38px);
+  font-size: clamp(23px, 2.1vw, 34px);
   font-weight: 700;
   line-height: 1.2;
+  white-space: nowrap;
 }
 
 .heroModeBody {
@@ -12780,6 +12781,7 @@ body {
 
   .heroModeSubTitle {
     font-size: 23px;
+    white-space: normal;
   }
 
   .heroModeFeatureGrid {

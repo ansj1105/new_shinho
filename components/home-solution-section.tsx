@@ -54,7 +54,18 @@ export function HomeSolutionSection({
       !searchable.includes("광학 솔루션")
     );
   });
-  const visualItems = visibleSolutions.slice(0, 4);
+  const visualItems = visibleSolutions.slice(0, 4).map((item, index) => {
+    const fixedImageByIndex = {
+      1: "/home-solution-intro-1.jpg",
+      2: "/home-solution-intro-2.jpg",
+      3: "/home-solution-intro-3.png",
+    } as const;
+
+    return {
+      ...item,
+      imageUrl: fixedImageByIndex[index as keyof typeof fixedImageByIndex] ?? item.imageUrl,
+    };
+  });
   const featuredItems = visibleSolutions
     .filter((item) => {
       const searchable = `${item.slug} ${item.titleKo} ${item.titleEn}`.toLowerCase();

@@ -106,10 +106,10 @@ export function Footer({
           </div>
 
           <div className="footerFollowBlock">
-            <strong>{locale === "ko" ? "우리를 팔로우하세요" : "Follow us"}</strong>
+            <strong>About Rumos</strong>
             <Image
-              src="/shinhotek-site-qr.svg"
-              alt={locale === "ko" ? "신호텍 사이트 QR 코드" : "Shinhotek site QR code"}
+              src="/lumos-footer-qr.png"
+              alt="About Rumos QR code"
               width={96}
               height={96}
               className="footerQrCode"

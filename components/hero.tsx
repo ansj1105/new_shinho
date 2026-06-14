@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { Aperture, Orbit, ScanSearch, ShieldCheck } from "lucide-react";
 
 import type { Locale } from "@/lib/site";
 
@@ -9,6 +10,8 @@ type HeroProps = {
   title?: string | null;
   description?: string | null;
 };
+
+const featureIcons = [ShieldCheck, Aperture, Orbit, ScanSearch] as const;
 
 const heroContent = {
   ko: {
@@ -102,17 +105,21 @@ export function Hero({ locale }: HeroProps) {
           <p className="heroModeBody">{content.body}</p>
 
           <div className="heroModeFeatureGrid">
-            {content.features.map((feature) => (
-              <div key={feature.title} className="heroModeFeatureCard">
-                <span className="heroModeFeatureIcon" aria-hidden="true">
-                  ✦
-                </span>
-                <div className="heroModeFeatureCopy">
-                  <strong>{feature.title}</strong>
-                  <span>{feature.body}</span>
+            {content.features.map((feature, index) => {
+              const Icon = featureIcons[index] ?? ShieldCheck;
+
+              return (
+                <div key={feature.title} className="heroModeFeatureCard">
+                  <span className="heroModeFeatureIcon" aria-hidden="true">
+                    <Icon size={15} strokeWidth={2} />
+                  </span>
+                  <div className="heroModeFeatureCopy">
+                    <strong>{feature.title}</strong>
+                    <span>{feature.body}</span>
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
 
           <div className="heroModeActions">
