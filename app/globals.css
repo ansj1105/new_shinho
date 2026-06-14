@@ -9751,9 +9751,18 @@ body {
 }
 
 .navDropdown {
-  min-width: 360px;
+  min-width: 260px;
   padding: 12px 0;
   border-top: 0;
+  row-gap: 2px;
+}
+
+.navDropdown.isSingleColumnDropdown {
+  grid-template-columns: minmax(220px, 1fr);
+}
+
+.navDropdown.isProductsDropdown {
+  min-width: 360px;
   grid-template-columns: repeat(2, minmax(160px, 1fr));
   column-gap: 12px;
 }

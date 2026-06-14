@@ -12,7 +12,7 @@
   storyTitleKo: "신호텍 소개",
   storyTitleEn: "About Shinhotek",
   storyBodyKo:
-    "신호텍은 레이저 공정과 광학 시스템 구축에 필요한 제품과 기술 지원을 제공하는 산업용 광학 솔루션 기업입니다. 고객의 공정 조건에 맞는 제품 선정, 기술 검토, 자료 제공, 사후 지원까지 하나의 흐름으로 관리합니다.",
+    "신호텍은 2007년 설립 이래 레이저 및 광학 솔루션 분야에서 차별화된 기술력과 빠른 실행력을 바탕으로 성장해온 전문 기업입니다. 단순한 부품 공급을 넘어 설계, 시뮬레이션, 정밀 제작 및 제어 소프트웨어까지 아우르는 '토털 옵티컬 솔루션'을 제공하는 목표를 가지고 고출력 레이저 광학계, Beam Profiler, F-Theta Lens, Beam Monitoring System, Bessel Beam Generator 등 고정밀 광학 솔루션을 자체 개발하고 있습니다. 이러한 독자적인 기술 역량을 축적하며 산업용·반도체·디스플레이·자동차·국방 등 다양한 첨단 산업에 최적화된 솔루션을 제공하고 있습니다.\n\n특히 초고속 레이저 가공과 정밀 계측 분야에서 요구되는 안정성과 정밀도를 제어하는 빔프로파일러를 자체 개발한 LUMOSITY 소프트웨어와 하드웨어를 최초로 국산화 양산화하여 레이저 상태를 실시간으로 분석·모니터링할 수 있는 통합 솔루션을 제공하여 고객 공정의 생산성과 신뢰성을 동시에 향상시키고 있습니다.\n\n\"First & Fast, Beyond Optics\"라는 비전 아래, 신호텍은 창의적인 광학 기술과 민첩한 개발 역량으로 미래 레이저·광학 산업을 선도하는 글로벌 파트너로 도약하고 있습니다.",
   storyBodyEn:
     "Shinhotek is an industrial optical solution company supporting product selection, technical review, documentation, and after-sales support for laser processes and optical systems.",
   storyFontSize: 18,

@@ -94,7 +94,7 @@ function resolveProductImageUrl(product: SeriesProductData) {
 
 const homeTabItems = [
   { key: "hero", label: "Hero" },
-  { key: "story", label: "Story" },
+  { key: "story", label: "Shinhotek Intro" },
   { key: "series", label: "Series" },
   { key: "flow", label: "Flow Logos" },
   { key: "history", label: "History" },
@@ -192,20 +192,20 @@ export function AdminHomeTabs({
         <section className="lumosAdminSectionCard">
           <div className="lumosAdminSectionHead">
             <div>
-              <h2>Story Section</h2>
-              <p>브랜드 어원 섹션 문구와 폰트 크기를 관리합니다.</p>
+              <h2>Shinhotek Intro Section</h2>
+              <p>메인 신호텍 소개 영역의 제목과 본문을 관리합니다. 이미지 변경은 Applications 관리자에서 각 항목별로 수정합니다.</p>
             </div>
           </div>
           <form action={updateStorySection} className="lumosAdminForm">
             <div className="lumosAdminClientPreview">
               <div className="lumosAdminAssetPreviewHead">
                 <strong>Client Page Preview</strong>
-                <span>/ko#storySection</span>
+                <span>/ko</span>
               </div>
               <div className="lumosAdminClientPreviewFrame">
                 <iframe
-                  src="/ko#storySection"
-                  title="story section preview"
+                  src="/ko"
+                  title="shinhotek intro section preview"
                   loading="lazy"
                   scrolling="no"
                   className="lumosAdminClientPreviewIframe"
@@ -214,11 +214,11 @@ export function AdminHomeTabs({
             </div>
             <div className="lumosAdminFormGrid">
               <label className="field">
-                <span>Story Title KO</span>
+                <span>Intro Title KO</span>
                 <input name="storyTitleKo" defaultValue={siteConfig.storyTitleKo} />
               </label>
               <label className="field">
-                <span>Story Title EN</span>
+                <span>Intro Title EN</span>
                 <input name="storyTitleEn" defaultValue={siteConfig.storyTitleEn} />
               </label>
               <label className="field">
@@ -285,16 +285,16 @@ export function AdminHomeTabs({
             <input type="hidden" name="storyFontSize" value={siteConfig.storyBodyFontSizeKo} />
             <div className="lumosAdminFormGrid">
               <label className="field">
-                <span>Story Body KO</span>
+                <span>Intro Body KO</span>
                 <textarea name="storyBodyKo" defaultValue={siteConfig.storyBodyKo} />
               </label>
               <label className="field">
-                <span>Story Body EN</span>
+                <span>Intro Body EN</span>
                 <textarea name="storyBodyEn" defaultValue={siteConfig.storyBodyEn} />
               </label>
             </div>
             <button type="submit" className="lumosAdminPrimaryButton">
-              어원 영역 저장
+              신호텍 소개 저장
             </button>
           </form>
         </section>

@@ -40,7 +40,7 @@ export function HomeSolutionSection({
   const leadHtml = resourceBodyToHtml(
     lead ||
       (isKo
-        ? "제품 판매에 머물지 않고 광학 솔루션, 광학 설계, 기구 설계, SW 설계까지 연결하는 산업용 레이저·광학 파트너를 지향합니다."
+        ? "제품 판매에 머물지 않고 광학 솔루션, 광학 설계, SW 설계까지 연결하는 산업용 레이저·광학 파트너를 지향합니다."
         : "Beyond product supply, Shinhotek connects selection, engineering review, and application support for industrial laser and optical systems."),
   );
   const visibleSolutions = solutions.filter((item) => {
@@ -62,6 +62,14 @@ export function HomeSolutionSection({
         !searchable.includes("optical-design") &&
         !searchable.includes("optical design") &&
         !searchable.includes("광학 설계") &&
+        !searchable.includes("mechanical-design") &&
+        !searchable.includes("mechanical design") &&
+        !searchable.includes("기구설계") &&
+        !searchable.includes("기구 설계") &&
+        !searchable.includes("battery") &&
+        !searchable.includes("rechargeable-battery") &&
+        !searchable.includes("rechargeable battery") &&
+        !searchable.includes("이차전지") &&
         !searchable.includes("display") &&
         !searchable.includes("디스플레이")
       );

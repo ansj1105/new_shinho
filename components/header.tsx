@@ -92,7 +92,11 @@ export function Header({ locale, productLinks }: HeaderProps) {
                   {item.label}
                 </Link>
                 {item.children ? (
-                  <div className="navDropdown card">
+                  <div
+                    className={`navDropdown card ${
+                      item.href === "/products" ? "isProductsDropdown" : "isSingleColumnDropdown"
+                    }`}
+                  >
                     {item.children.map((child) => (
                       <div key={child.href} className="navDropdownGroup">
                         <Link
