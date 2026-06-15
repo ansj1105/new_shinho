@@ -93,6 +93,9 @@ export function HomeSolutionSection({
           </div>
 
           <div className="homeSolutionCopyPanel">
+            <div className="homeSolutionTitleBox">
+              <h2>{title || (isKo ? "신호텍 소개" : "About Shinhotek")}</h2>
+            </div>
             <div className="homeSolutionLead" dangerouslySetInnerHTML={{ __html: leadHtml }} />
           </div>
         </div>
