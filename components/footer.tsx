@@ -106,10 +106,10 @@ export function Footer({
           </div>
 
           <div className="footerFollowBlock">
-            <strong>About Rumos</strong>
+            <strong>About Lumos</strong>
             <Image
               src="/lumos-footer-qr.png"
-              alt="About Rumos QR code"
+              alt="About Lumos QR code"
               width={96}
               height={96}
               className="footerQrCode"
