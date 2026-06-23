@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 
 import { SubpageHero } from "@/components/subpage-hero";
 import { getProductBySlug, getProductMakerBySlug } from "@/lib/content";
+import { getProductMakerDetailContent } from "@/lib/product-maker-detail-content";
 import { buildPageMetadata } from "@/lib/seo";
 import type { Locale } from "@/lib/site";
 
@@ -16,6 +17,7 @@ export async function generateMetadata({
   const { locale, slug, makerSlug } = await params;
   const product = await getProductBySlug(slug);
   const maker = await getProductMakerBySlug(slug, makerSlug);
+  const detail = getProductMakerDetailContent(slug, makerSlug);
 
   if (!product || !product.published || !maker) {
     return buildPageMetadata({
@@ -27,7 +29,13 @@ export async function generateMetadata({
   }
 
   const productName = locale === "ko" ? product.nameKo : product.nameEn;
-  const description = locale === "ko" ? maker.descriptionKo : maker.descriptionEn;
+  const description = detail
+    ? locale === "ko"
+      ? detail.leadKo
+      : detail.leadEn
+    : locale === "ko"
+      ? maker.descriptionKo
+      : maker.descriptionEn;
 
   return buildPageMetadata({
     locale,
@@ -35,7 +43,7 @@ export async function generateMetadata({
     title: `${maker.name} | ${productName} | ${locale === "ko" ? "신호텍" : "Shinhotek"}`,
     description,
     keywords: [maker.name, product.nameKo, product.nameEn, "Shinhotek", "laser", "optical solution"],
-    image: maker.logoUrl,
+    image: detail?.heroImage ?? maker.logoUrl,
     type: "article",
     category: "Manufacturer product detail",
   });
@@ -57,10 +65,18 @@ export default async function ProductMakerDetailPage({
   const productName = locale === "ko" ? product.nameKo : product.nameEn;
   const makerSummary = locale === "ko" ? maker.summaryKo : maker.summaryEn;
   const makerDescription = locale === "ko" ? maker.descriptionKo : maker.descriptionEn;
+  const detail = getProductMakerDetailContent(slug, makerSlug);
+  const detailHeadline = detail ? (locale === "ko" ? detail.headlineKo : detail.headlineEn) : maker.name;
+  const detailLead = detail ? (locale === "ko" ? detail.leadKo : detail.leadEn) : makerDescription;
+  const detailLabel = detail ? (locale === "ko" ? detail.labelKo : detail.labelEn) : productName;
+  const detailReference = detail ? (locale === "ko" ? detail.referenceKo : detail.referenceEn) : null;
+  const detailNotes = detail ? (locale === "ko" ? detail.notesKo : detail.notesEn) : [];
+  const detailBlocks = detail?.blocks ?? [];
   const heroBgImage = product.heroBgImageUrl || "/subpage-products-laser-bg.png";
+  const primaryImage = detail?.heroImage ?? maker.logoUrl;
 
   return (
-    <div className={`productsPage productMakerDetailPage productMakerDetailPage-${slug}`}>
+    <div className={`productsPage productMakerDetailPage productMakerDetailPage-${slug} productMakerDetailPage-${makerSlug}`}>
       <SubpageHero
         eyebrow={productName}
         title={maker.name}
@@ -71,61 +87,89 @@ export default async function ProductMakerDetailPage({
       />
 
       <div className="container subpageContent">
-        <section className="productMakerDetailHero">
-          <div className="productMakerDetailLogoPanel">
-            <Image src={maker.logoUrl} alt={maker.name} fill sizes="(max-width: 760px) 80vw, 360px" />
+        <section className="makerDetailIntro">
+          <div className="makerDetailIntroMedia">
+            <Image src={primaryImage} alt={maker.name} fill sizes="(max-width: 900px) 100vw, 520px" priority />
           </div>
-          <div className="productMakerDetailCopy">
-            <span>{locale === "ko" ? "제조사 상세" : "Manufacturer detail"}</span>
-            <h2>{maker.name}</h2>
-            <p>{makerDescription}</p>
-            <dl className="productMakerDetailFacts">
-              <div>
-                <dt>{locale === "ko" ? "적용 분야" : "Application"}</dt>
-                <dd>{makerSummary}</dd>
-              </div>
-              <div>
-                <dt>{locale === "ko" ? "지원 범위" : "Support"}</dt>
-                <dd>{locale === "ko" ? "사양 검토 / 테스트 상담 / 적용 제안" : "Specification review / test consultation / application proposal"}</dd>
-              </div>
-            </dl>
+          <div className="makerDetailIntroCopy">
+            <span>{detailLabel}</span>
+            <h2>{detailHeadline}</h2>
+            <p>{detailLead}</p>
+            {detailReference ? <em>{detailReference}</em> : null}
+            {detailNotes.length ? (
+              <ul>
+                {detailNotes.map((note) => (
+                  <li key={note}>{note}</li>
+                ))}
+              </ul>
+            ) : null}
           </div>
         </section>
 
-        <section className="productMakerDetailBody">
-          <article className="productMakerDetailCard">
-            <span>{locale === "ko" ? "검토 항목" : "Review scope"}</span>
-            <h3>{locale === "ko" ? "공정 조건 기반 제품 검토" : "Product review by process requirements"}</h3>
+        <section className="makerDetailProductSection" aria-label={locale === "ko" ? "제품 구성" : "Product lineup"}>
+          <div className="makerDetailSectionHead">
+            <span>{locale === "ko" ? "제품 구성" : "Product lineup"}</span>
+            <h2>{locale === "ko" ? "제조사 제품 구성과 적용 검토" : "Manufacturer lineup and application review"}</h2>
             <p>
               {locale === "ko"
-                ? "신호텍은 제조사별 라인업을 단순 연결하지 않고 출력, 파장, 빔 품질, 광학 구성, 설치 조건을 함께 검토해 적용 가능성을 확인합니다."
-                : "SHINHOTEK reviews output, wavelength, beam quality, optical configuration, and installation conditions rather than only forwarding manufacturer lineups."}
+                ? "첨부된 제조사 상세 페이지 구성을 기준으로 제품 이미지, 주요 설명, 적용 검토 항목을 한 화면에서 확인할 수 있도록 정리했습니다."
+                : "The page is structured around the supplied manufacturer reference layout, with product visuals, key descriptions, and application review points in one flow."}
             </p>
-          </article>
-          <article className="productMakerDetailCard">
-            <span>{locale === "ko" ? "신호텍 지원" : "Shinhotek support"}</span>
-            <h3>{locale === "ko" ? "문의부터 적용까지 연결" : "From inquiry to implementation"}</h3>
-            <p>
-              {locale === "ko"
-                ? "필요 사양 정리, 제조사 기술 확인, 대체 제품 제안, 테스트 및 데모 상담까지 프로젝트 흐름에 맞춰 지원합니다."
-                : "We support requirement clarification, manufacturer technical checks, alternative product suggestions, and test or demo consultation according to the project flow."}
-            </p>
-          </article>
+          </div>
+
+          {detailBlocks.length ? (
+            <div className="makerDetailProductGrid">
+              {detailBlocks.map((item) => {
+                const title = locale === "ko" ? item.titleKo : item.titleEn;
+                const body = locale === "ko" ? item.bodyKo : item.bodyEn;
+
+                return (
+                  <article key={title} className="makerDetailProductCard">
+                    {item.image ? (
+                      <div className="makerDetailProductMedia">
+                        <Image src={item.image} alt={title} fill sizes="(max-width: 760px) 100vw, 360px" />
+                      </div>
+                    ) : null}
+                    <div className="makerDetailProductCopy">
+                      <h3>{title}</h3>
+                      <p>{body}</p>
+                    </div>
+                  </article>
+                );
+              })}
+            </div>
+          ) : (
+            <article className="makerDetailFallbackPanel">
+              <h3>{maker.name}</h3>
+              <p>{makerDescription}</p>
+            </article>
+          )}
         </section>
 
-        <div className="productMakerDetailActions">
-          <Link href={`/${locale}/products/${slug}`} className="button secondary">
-            {locale === "ko" ? "제품군으로 돌아가기" : "Back to product group"}
-          </Link>
-          <Link href={`/${locale}/contact/quote`} className="button">
-            {locale === "ko" ? "문의하기" : "Contact us"}
-          </Link>
-          {maker.website ? (
-            <a href={maker.website} target="_blank" rel="noreferrer" className="button secondary">
-              {locale === "ko" ? "제조사 홈페이지" : "Manufacturer website"}
-            </a>
-          ) : null}
-        </div>
+        <section className="makerDetailSupportBand">
+          <div>
+            <span>{locale === "ko" ? "SHINHOTEK SUPPORT" : "SHINHOTEK SUPPORT"}</span>
+            <h2>{locale === "ko" ? "문의부터 적용까지 연결" : "From inquiry to implementation"}</h2>
+            <p>
+              {locale === "ko"
+                ? "신호텍은 제조사 페이지를 단순 연결하지 않고 고객 공정 조건, 장비 구성, 테스트 가능성을 함께 검토합니다."
+                : "SHINHOTEK reviews process conditions, equipment configuration, and test feasibility rather than only linking manufacturer pages."}
+            </p>
+          </div>
+          <div className="makerDetailActions">
+            <Link href={`/${locale}/products/${slug}`} className="button secondary">
+              {locale === "ko" ? "제품군으로 돌아가기" : "Back to product group"}
+            </Link>
+            <Link href={`/${locale}/contact/quote`} className="button">
+              {locale === "ko" ? "문의하기" : "Contact us"}
+            </Link>
+            {maker.website ? (
+              <a href={maker.website} target="_blank" rel="noreferrer" className="button secondary">
+                {locale === "ko" ? "제조사 홈페이지" : "Manufacturer website"}
+              </a>
+            ) : null}
+          </div>
+        </section>
       </div>
     </div>
   );

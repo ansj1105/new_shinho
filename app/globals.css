@@ -9324,7 +9324,7 @@ body {
 .makerMarqueeTrack {
   display: flex;
   width: max-content;
-  animation: makerMarquee 28s linear infinite;
+  animation: makerMarquee 42s linear infinite;
 }
 
 .makerMarquee span {
@@ -10525,7 +10525,7 @@ body {
 
 .solutionPageIntro {
   display: grid;
-  grid-template-columns: minmax(180px, 0.34fr) minmax(0, 0.9fr);
+  grid-template-columns: minmax(0, 1fr);
   gap: clamp(22px, 4vw, 58px);
   align-items: end;
   padding-top: clamp(10px, 1.8vw, 24px);
@@ -10551,9 +10551,9 @@ body {
 }
 
 .solutionPageIntro p {
-  grid-column: 2;
-  max-width: 760px;
-  margin: -24px 0 0;
+  grid-column: 1;
+  max-width: 860px;
+  margin: 0;
   color: rgba(255, 255, 255, 0.68);
   font-size: clamp(15px, 1.3vw, 18px);
   line-height: 1.75;
@@ -13159,22 +13159,12 @@ body {
   position: relative;
   overflow: hidden;
   padding: clamp(48px, 6vw, 76px) 0;
-  background:
-    linear-gradient(90deg, rgba(32, 38, 42, 0.96), rgba(22, 28, 31, 0.96)),
-    repeating-linear-gradient(145deg, rgba(0, 130, 220, 0.2) 0 2px, transparent 2px 18px);
+  background: linear-gradient(90deg, rgba(32, 38, 42, 0.96), rgba(22, 28, 31, 0.96));
+}
+.homeContactSection::after {
+  content: none;
 }
 
-.homeContactSection::after {
-  content: "";
-  position: absolute;
-  inset: 0 0 0 auto;
-  width: 38%;
-  background:
-    repeating-linear-gradient(145deg, rgba(0, 120, 255, 0.28) 0 2px, transparent 2px 18px),
-    repeating-linear-gradient(35deg, rgba(231, 0, 100, 0.22) 0 2px, transparent 2px 22px);
-  opacity: 0.5;
-  pointer-events: none;
-}
 
 .homeContactBand {
   position: relative;
@@ -13247,9 +13237,9 @@ body {
 .homeContactInfoPanel {
   display: grid;
   place-content: center;
-  gap: 8px;
-  min-height: clamp(150px, 16vw, 210px);
-  padding: 28px;
+  gap: clamp(14px, 1.4vw, 20px);
+  min-height: clamp(170px, 17vw, 230px);
+  padding: clamp(34px, 3.4vw, 52px);
   border: 1px solid rgba(255, 255, 255, 0.18);
   background: rgba(7, 12, 18, 0.18);
   color: #ffffff;
@@ -13257,13 +13247,13 @@ body {
 }
 
 .homeContactInfoPanel span {
-  font-size: clamp(18px, 1.5vw, 25px);
-  line-height: 1.25;
+  font-size: clamp(17px, 1.35vw, 23px);
+  line-height: 1.45;
 }
 
 @media (min-width: 1001px) {
   .homeContactInfoPanel {
-    padding: clamp(38px, 3.2vw, 54px);
+    padding: clamp(44px, 4vw, 64px);
   }
 }
 
@@ -13302,7 +13292,7 @@ body {
   display: flex;
   gap: 20px;
   width: max-content;
-  animation: makerMarquee 32s linear infinite;
+  animation: makerMarquee 48s linear infinite;
   will-change: transform;
 }
 
@@ -13567,9 +13557,9 @@ body {
 }
 
 .companyCeoCopyPanel {
-  border: 0;
   padding: clamp(22px, 3vw, 38px);
-  background: rgba(12, 13, 15, 0.96);
+  background: rgba(255, 255, 255, 0.045);
+  border: 1px solid rgba(255, 255, 255, 0.10);
 }
 
 .companyCeoSurface .companyHistoryHeading {
@@ -13848,6 +13838,9 @@ body {
 .shell main .companyDirectionsSection .directionsTwoCol {
   width: min(100%, var(--sh-content-max));
   margin-inline: auto;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
 }
 
 .shell main :is(
@@ -14331,6 +14324,7 @@ body {
 
 /* Partner page final layout override */
 .shell main .companyPartnerSection {
+  padding-top: clamp(36px, 5vw, 72px);
   background: #080d12;
 }
 
@@ -14396,4 +14390,233 @@ body {
 .shell main .companyPrinciplesSection,
 .shell main .companyPrinciplesSurface {
   display: none !important;
+}
+
+/* Manufacturer detail pages: PPT reference-based product layout */
+.productMakerDetailPage {
+  background: #080d12;
+  color: #f5f8fb;
+}
+
+.productMakerDetailPage .subpageContent {
+  display: grid;
+  gap: clamp(42px, 6vw, 84px);
+  padding-top: clamp(38px, 5vw, 72px);
+  padding-bottom: clamp(64px, 7vw, 108px);
+}
+
+.makerDetailIntro {
+  display: grid;
+  grid-template-columns: minmax(340px, 0.92fr) minmax(0, 1.08fr);
+  gap: clamp(28px, 4vw, 58px);
+  align-items: stretch;
+  border: 1px solid rgba(89, 204, 232, 0.18);
+  background: linear-gradient(135deg, rgba(14, 24, 32, 0.98), rgba(8, 13, 18, 0.98));
+}
+
+.makerDetailIntroMedia {
+  position: relative;
+  min-height: clamp(300px, 34vw, 520px);
+  background: #f3f6f8;
+  border-right: 1px solid rgba(89, 204, 232, 0.14);
+}
+
+.makerDetailIntroMedia img {
+  object-fit: contain;
+  padding: clamp(18px, 3vw, 42px);
+}
+
+.makerDetailIntroCopy {
+  display: grid;
+  align-content: center;
+  gap: clamp(14px, 2vw, 22px);
+  padding: clamp(28px, 4vw, 58px) clamp(24px, 4vw, 54px);
+}
+
+.makerDetailIntroCopy > span,
+.makerDetailSectionHead span,
+.makerDetailSupportBand span {
+  color: #54cce8;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.makerDetailIntroCopy h2,
+.makerDetailSectionHead h2,
+.makerDetailSupportBand h2 {
+  margin: 0;
+  color: #ffffff;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.makerDetailIntroCopy h2 {
+  font-size: clamp(32px, 4vw, 62px);
+  line-height: 1.05;
+}
+
+.makerDetailIntroCopy p,
+.makerDetailSectionHead p,
+.makerDetailSupportBand p,
+.makerDetailProductCopy p,
+.makerDetailFallbackPanel p {
+  margin: 0;
+  color: rgba(232, 242, 247, 0.74);
+  font-size: 15px;
+  line-height: 1.72;
+}
+
+.makerDetailIntroCopy em {
+  display: block;
+  color: rgba(255, 255, 255, 0.56);
+  font-size: 13px;
+  font-style: normal;
+  line-height: 1.55;
+}
+
+.makerDetailIntroCopy ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 4px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.makerDetailIntroCopy li {
+  border: 1px solid rgba(84, 204, 232, 0.24);
+  padding: 8px 12px;
+  color: rgba(244, 250, 252, 0.86);
+  background: rgba(84, 204, 232, 0.08);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.makerDetailProductSection {
+  display: grid;
+  gap: clamp(24px, 3.5vw, 42px);
+}
+
+.makerDetailSectionHead {
+  display: grid;
+  gap: 10px;
+  max-width: 860px;
+}
+
+.makerDetailSectionHead h2 {
+  font-size: clamp(26px, 3vw, 44px);
+  line-height: 1.16;
+}
+
+.makerDetailProductGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(18px, 2vw, 28px);
+}
+
+.makerDetailProductCard {
+  display: grid;
+  min-height: 100%;
+  border: 1px solid rgba(89, 204, 232, 0.14);
+  background: #121a21;
+}
+
+.makerDetailProductMedia {
+  position: relative;
+  min-height: clamp(190px, 18vw, 280px);
+  background: #f5f7f9;
+  border-bottom: 1px solid rgba(89, 204, 232, 0.12);
+}
+
+.makerDetailProductMedia img {
+  object-fit: contain;
+  padding: clamp(14px, 2vw, 26px);
+}
+
+.makerDetailProductCopy {
+  display: grid;
+  gap: 10px;
+  align-content: start;
+  padding: clamp(20px, 2.6vw, 30px);
+}
+
+.makerDetailProductCopy h3,
+.makerDetailFallbackPanel h3 {
+  margin: 0;
+  color: #ffffff;
+  font-size: clamp(18px, 1.55vw, 24px);
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.makerDetailFallbackPanel {
+  display: grid;
+  gap: 12px;
+  max-width: 860px;
+  padding: clamp(24px, 3vw, 38px);
+  border: 1px solid rgba(89, 204, 232, 0.14);
+  background: #121a21;
+}
+
+.makerDetailSupportBand {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: clamp(22px, 3vw, 42px);
+  align-items: center;
+  padding: clamp(24px, 3vw, 40px);
+  border: 1px solid rgba(255, 157, 20, 0.26);
+  background: linear-gradient(135deg, rgba(18, 26, 33, 0.98), rgba(10, 15, 20, 0.98));
+}
+
+.makerDetailSupportBand > div:first-child {
+  display: grid;
+  gap: 10px;
+}
+
+.makerDetailSupportBand h2 {
+  font-size: clamp(24px, 2.6vw, 38px);
+}
+
+.makerDetailActions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+@media (max-width: 1040px) {
+  .makerDetailIntro,
+  .makerDetailSupportBand {
+    grid-template-columns: 1fr;
+  }
+
+  .makerDetailIntroMedia {
+    border-right: 0;
+    border-bottom: 1px solid rgba(89, 204, 232, 0.14);
+  }
+
+  .makerDetailProductGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .makerDetailActions {
+    justify-content: flex-start;
+  }
+}
+
+@media (max-width: 640px) {
+  .makerDetailProductGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .makerDetailIntroMedia {
+    min-height: 260px;
+  }
+
+  .makerDetailIntroCopy,
+  .makerDetailSupportBand {
+    padding: 22px;
+  }
 }
