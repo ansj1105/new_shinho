@@ -72,6 +72,7 @@ export default async function ProductMakerDetailPage({
   const detailReference = detail ? (locale === "ko" ? detail.referenceKo : detail.referenceEn) : null;
   const detailNotes = detail ? (locale === "ko" ? detail.notesKo : detail.notesEn) : [];
   const detailBlocks = detail?.blocks ?? [];
+  const detailProductGroups = detail?.productGroups ?? [];
   const heroBgImage = product.heroBgImageUrl || "/subpage-products-laser-bg.png";
   const primaryImage = detail?.heroImage ?? maker.logoUrl;
 
@@ -117,7 +118,48 @@ export default async function ProductMakerDetailPage({
             </p>
           </div>
 
-          {detailBlocks.length ? (
+          {detailProductGroups.length ? (
+            <div className="makerDetailCatalog" aria-label={locale === "ko" ? "제조사 제품 목록" : "Manufacturer products"}>
+              {detailProductGroups.map((group) => {
+                const groupTitle = locale === "ko" ? group.titleKo : group.titleEn;
+
+                return (
+                  <section key={groupTitle} className="makerDetailCatalogGroup" aria-labelledby={`maker-detail-group-${groupTitle}`}>
+                    <h3 id={`maker-detail-group-${groupTitle}`}>{groupTitle}</h3>
+                    <div className="makerDetailCatalogGrid">
+                      {group.products.map((productItem) => {
+                        const specs = locale === "ko" ? productItem.specsKo : productItem.specsEn;
+
+                        return (
+                          <article key={productItem.name} className="makerDetailCatalogCard">
+                            {productItem.image ? (
+                              <div className="makerDetailCatalogMedia">
+                                <Image src={productItem.image} alt={productItem.name} fill sizes="(max-width: 760px) 80vw, 240px" />
+                              </div>
+                            ) : null}
+                            <div className="makerDetailCatalogCopy">
+                              <span>{maker.name}</span>
+                              <h4>{productItem.name}</h4>
+                              <ul>
+                                {specs.map((spec) => (
+                                  <li key={spec}>{spec}</li>
+                                ))}
+                              </ul>
+                            </div>
+                            {maker.website ? (
+                              <a href={maker.website} target="_blank" rel="noreferrer" className="makerDetailCatalogButton">
+                                SEE MORE
+                              </a>
+                            ) : null}
+                          </article>
+                        );
+                      })}
+                    </div>
+                  </section>
+                );
+              })}
+            </div>
+          ) : detailBlocks.length ? (
             <div className="makerDetailProductGrid">
               {detailBlocks.map((item) => {
                 const title = locale === "ko" ? item.titleKo : item.titleEn;

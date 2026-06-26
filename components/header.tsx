@@ -97,37 +97,41 @@ export function Header({ locale, productLinks }: HeaderProps) {
                       item.href === "/products" ? "isProductsDropdown" : "isSingleColumnDropdown"
                     }`}
                   >
-                    {item.children.map((child) => (
-                      <div key={child.href} className="navDropdownGroup">
-                        <Link
-                          href={`/${locale}${child.href}`}
-                          className="navDropdownLink"
-                          onClick={() => {
-                            setOpenNavHref(null);
-                            setSuppressNavHover(true);
-                          }}
-                        >
-                          {child.label}
-                        </Link>
-                        {"children" in child && child.children?.length ? (
-                          <div className="navDropdownDepthList">
-                            {child.children.map((grandChild) => (
-                              <Link
-                                key={grandChild.href}
-                                href={`/${locale}${grandChild.href}`}
-                                className="navDropdownDepthLink"
-                                onClick={() => {
-                                  setOpenNavHref(null);
-                                  setSuppressNavHover(true);
-                                }}
-                              >
-                                {grandChild.label}
-                              </Link>
-                            ))}
-                          </div>
-                        ) : null}
-                      </div>
-                    ))}
+                    {item.children.map((child) => {
+                      const hasDepth = "children" in child && Boolean(child.children?.length);
+
+                      return (
+                        <div key={child.href} className={`navDropdownGroup ${hasDepth ? "hasDepth" : ""}`}>
+                          <Link
+                            href={`/${locale}${child.href}`}
+                            className={`navDropdownLink ${hasDepth ? "hasDepth" : ""}`}
+                            onClick={() => {
+                              setOpenNavHref(null);
+                              setSuppressNavHover(true);
+                            }}
+                          >
+                            {child.label}
+                          </Link>
+                          {hasDepth ? (
+                            <div className="navDropdownDepthList">
+                              {child.children?.map((grandChild) => (
+                                <Link
+                                  key={grandChild.href}
+                                  href={`/${locale}${grandChild.href}`}
+                                  className="navDropdownDepthLink"
+                                  onClick={() => {
+                                    setOpenNavHref(null);
+                                    setSuppressNavHover(true);
+                                  }}
+                                >
+                                  {grandChild.label}
+                                </Link>
+                              ))}
+                            </div>
+                          ) : null}
+                        </div>
+                      );
+                    })}
                   </div>
                 ) : null}
               </div>

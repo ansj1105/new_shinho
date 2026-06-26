@@ -10046,6 +10046,86 @@ body {
   border-top: 0;
 }
 
+.navDropdown.isProductsDropdown {
+  min-width: 280px;
+  grid-template-columns: minmax(240px, 1fr);
+  overflow: visible;
+}
+
+.navDropdownGroup {
+  position: relative;
+}
+
+.navDropdownLink.hasDepth {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.navDropdownLink.hasDepth::after {
+  content: "›";
+  color: rgba(38, 52, 65, 0.5);
+  font-size: 20px;
+  line-height: 1;
+  transform: translateY(-1px);
+  transition: color 160ms ease, transform 160ms ease;
+}
+
+.navDropdownGroup.hasDepth:hover > .navDropdownLink::after,
+.navDropdownGroup.hasDepth:focus-within > .navDropdownLink::after {
+  color: var(--sh-cyan);
+  transform: translate(3px, -1px);
+}
+
+.navDropdown.isProductsDropdown .navDropdownDepthList {
+  position: absolute;
+  top: -12px;
+  left: calc(100% + 12px);
+  z-index: 30;
+  min-width: 260px;
+  padding: 12px 0;
+  display: grid;
+  gap: 2px;
+  background: rgba(255, 255, 255, 0.99);
+  border: 1px solid rgba(15, 34, 61, 0.08);
+  border-radius: 0;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(-6px);
+  transition: opacity 160ms ease, transform 160ms ease;
+}
+
+.navDropdown.isProductsDropdown .navDropdownDepthList::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -14px;
+  width: 14px;
+}
+
+.navDropdown.isProductsDropdown .navDropdownGroup.hasDepth:hover > .navDropdownDepthList,
+.navDropdown.isProductsDropdown .navDropdownGroup.hasDepth:focus-within > .navDropdownDepthList {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateX(0);
+}
+
+.navDropdown.isProductsDropdown .navDropdownDepthLink {
+  padding: 9px 24px;
+  color: rgba(38, 52, 65, 0.72);
+  font-size: 13px;
+  line-height: 1.25;
+  white-space: nowrap;
+}
+
+.navDropdown.isProductsDropdown .navDropdownDepthLink:hover,
+.navDropdown.isProductsDropdown .navDropdownDepthLink:focus-visible {
+  color: var(--sh-cyan);
+  background: rgba(0, 95, 127, 0.04);
+}
+
 .localeSwitch,
 .mobileMenuButton {
   color: #ffffff;
@@ -14531,6 +14611,129 @@ body {
   gap: clamp(18px, 2vw, 28px);
 }
 
+.makerDetailCatalog {
+  display: grid;
+  gap: clamp(28px, 4vw, 46px);
+  padding: clamp(28px, 4vw, 54px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: #ffffff;
+  color: #111820;
+}
+
+.makerDetailCatalogGroup {
+  display: grid;
+  gap: clamp(18px, 2.4vw, 26px);
+}
+
+.makerDetailCatalogGroup h3 {
+  margin: 0;
+  color: #f49a10;
+  font-size: clamp(18px, 2vw, 28px);
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  line-height: 1.2;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.makerDetailCatalogGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(18px, 2vw, 28px);
+  justify-content: center;
+}
+
+.makerDetailCatalogGroup:nth-child(2) .makerDetailCatalogGrid {
+  grid-template-columns: repeat(2, minmax(220px, 300px));
+}
+
+.makerDetailCatalogCard {
+  display: grid;
+  grid-template-rows: 1fr auto;
+  min-height: 100%;
+  border: 1px solid rgba(15, 26, 36, 0.08);
+  background: #ffffff;
+  box-shadow: 0 12px 32px rgba(8, 13, 18, 0.12);
+}
+
+.makerDetailCatalogCard:has(.makerDetailCatalogMedia) {
+  grid-template-rows: auto 1fr auto;
+}
+
+.makerDetailCatalogMedia {
+  position: relative;
+  min-height: 180px;
+  background: #ffffff;
+}
+
+.makerDetailCatalogMedia img {
+  object-fit: contain;
+  padding: 24px 28px 10px;
+}
+
+.makerDetailCatalogCopy {
+  display: grid;
+  align-content: start;
+  gap: 10px;
+  padding: 28px 24px 24px;
+  text-align: center;
+}
+
+.makerDetailCatalogMedia + .makerDetailCatalogCopy {
+  padding-top: 0;
+}
+
+.makerDetailCatalogCopy span {
+  color: rgba(17, 24, 32, 0.52);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.makerDetailCatalogCopy h4 {
+  margin: 0;
+  color: #f49a10;
+  font-size: 17px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  line-height: 1.25;
+  text-transform: uppercase;
+}
+
+.makerDetailCatalogCopy ul {
+  display: grid;
+  gap: 5px;
+  margin: 0;
+  padding: 0;
+  color: #1f2b36;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.35;
+  list-style: none;
+}
+
+.makerDetailCatalogButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 42px;
+  padding: 0 18px;
+  background: #f49a10;
+  color: #111820;
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  text-decoration: none;
+  transition: background 160ms ease, color 160ms ease;
+}
+
+.makerDetailCatalogButton:hover,
+.makerDetailCatalogButton:focus-visible {
+  background: #0e1820;
+  color: #ffffff;
+}
+
 .makerDetailProductCard {
   display: grid;
   min-height: 100%;
@@ -14641,14 +14844,25 @@ body {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
+  .makerDetailCatalogGrid,
+  .makerDetailCatalogGroup:nth-child(2) .makerDetailCatalogGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .makerDetailActions {
     justify-content: flex-start;
   }
 }
 
 @media (max-width: 640px) {
-  .makerDetailProductGrid {
+  .makerDetailProductGrid,
+  .makerDetailCatalogGrid,
+  .makerDetailCatalogGroup:nth-child(2) .makerDetailCatalogGrid {
     grid-template-columns: 1fr;
+  }
+
+  .makerDetailCatalog {
+    padding: 22px 16px;
   }
 
   .makerDetailIntroMedia {

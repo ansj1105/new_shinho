@@ -6,6 +6,19 @@ export type MakerDetailBlock = {
   image?: string;
 };
 
+export type MakerDetailProduct = {
+  name: string;
+  image?: string;
+  specsKo: string[];
+  specsEn: string[];
+};
+
+export type MakerDetailProductGroup = {
+  titleKo: string;
+  titleEn: string;
+  products: MakerDetailProduct[];
+};
+
 export type MakerDetailContent = {
   labelKo: string;
   labelEn: string;
@@ -17,6 +30,7 @@ export type MakerDetailContent = {
   referenceKo?: string;
   referenceEn?: string;
   blocks: MakerDetailBlock[];
+  productGroups?: MakerDetailProductGroup[];
   notesKo: string[];
   notesEn: string[];
 };
@@ -38,16 +52,54 @@ const detailContent: Record<string, MakerDetailContent> = {
   "laser/spark-lasers": {
     labelKo: "Laser",
     labelEn: "Laser",
-    headlineKo: "Spark Lasers 제품 구성",
-    headlineEn: "Spark Lasers product lineup",
-    leadKo: "초단펄스 레이저 기반 공정에 필요한 제품군을 제조사 구성 흐름에 맞춰 제안합니다.",
-    leadEn: "Ultrafast laser products are organized around the manufacturer lineup and process requirements.",
-    heroImage: "/maker-detail/spark-lasers-hero.png",
+    headlineKo: "초단펄스 레이저 제품 구성",
+    headlineEn: "Ultrafast laser product lineup",
+    leadKo: "Spark Lasers의 펨토초 및 피코초 레이저 제품군을 공정 정밀도, 펄스 폭, 출력 조건 중심으로 검토합니다.",
+    leadEn: "Spark Lasers femtosecond and picosecond products are structured around precision, pulse width, and output requirements.",
+    heroImage: "/makers/spark-lasers.png",
     referenceKo: "Spark Lasers 제품 페이지 구성 참고",
     referenceEn: "Reference layout based on Spark Lasers product page",
     blocks: [
-      block("초단펄스 레이저", "Ultrafast lasers", "가공 정밀도, 펄스 폭, 출력 범위를 기준으로 적합 제품을 검토합니다.", "Products are reviewed by machining precision, pulse width, and output range.", "/maker-detail/spark-lasers-hero.png"),
-      block("공정 적용 검토", "Process review", "신호텍은 제조사 라인업과 고객 공정 조건을 연결해 적용 가능성을 확인합니다.", "SHINHOTEK connects manufacturer lineups with customer process conditions."),
+      block("공정 적용 검토", "Process review", "신호텍은 Spark Lasers 라인업과 고객 공정 조건을 연결해 적용 가능성을 확인합니다.", "SHINHOTEK connects Spark Lasers lineups with customer process conditions."),
+    ],
+    productGroups: [
+      {
+        titleKo: "FEMTOSECOND LASERS",
+        titleEn: "FEMTOSECOND LASERS",
+        products: [
+          {
+            name: "ALCOR",
+            specsKo: ["790, 1030 nm and 1040 nm", "< 500 fs / up to 30 W"],
+            specsEn: ["790, 1030 nm and 1040 nm", "< 500 fs / up to 30 W"],
+          },
+          {
+            name: "ALTAIR",
+            specsKo: ["1030 nm", "< 500 fs / up to 75 W / up to 1 MHz"],
+            specsEn: ["1030 nm", "< 500 fs / up to 75 W / up to 1 MHz"],
+          },
+          {
+            name: "DIADEM",
+            specsKo: ["515 nm and 1030 nm", "< 370 fs / up to 50 W / up to 1 MHz", "400 fs / up to 60 W"],
+            specsEn: ["515 nm and 1030 nm", "< 370 fs / up to 50 W / up to 1 MHz", "400 fs / up to 60 W"],
+          },
+        ],
+      },
+      {
+        titleKo: "PICOSECOND LASERS",
+        titleEn: "PICOSECOND LASERS",
+        products: [
+          {
+            name: "ANTARES",
+            specsKo: ["< 10 ps / High power", "High repetition rate / Narrow linewidth"],
+            specsEn: ["< 10 ps / High power", "High repetition rate / Narrow linewidth"],
+          },
+          {
+            name: "SIRIUS",
+            specsKo: ["< 10 ps / up to 40 uJ / 5 MHz", "High shot to shot stability"],
+            specsEn: ["< 10 ps / up to 40 uJ / 5 MHz", "High shot to shot stability"],
+          },
+        ],
+      },
     ],
     notesKo: defaultNotesKo,
     notesEn: defaultNotesEn,
