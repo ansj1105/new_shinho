@@ -468,6 +468,10 @@ export async function updateSeriesCardImage(formData: FormData) {
     where: { id },
     data: {
       imageUrl: await resolveAdminImageField(formData, "imageUrl", "imageUpload"),
+      nameKo: String(formData.get("nameKo") ?? "").trim(),
+      nameEn: String(formData.get("nameEn") ?? "").trim(),
+      summaryKo: String(formData.get("summaryKo") ?? ""),
+      summaryEn: String(formData.get("summaryEn") ?? ""),
     },
   });
 

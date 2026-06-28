@@ -13076,15 +13076,20 @@ body {
   z-index: 1;
   display: grid;
   place-items: center;
+  justify-items: center;
+  align-content: center;
   min-height: 100%;
   padding: 18px 16px;
   border-top: 0;
   background: linear-gradient(180deg, rgba(4, 11, 24, 0.08), rgba(4, 11, 24, 0.38));
+  text-align: center;
 }
 
 .seriesFeatureTitle,
 .seriesFeatureTitleName,
 .seriesFeatureTitleCategory {
+  display: block;
+  width: 100%;
   color: #ffffff;
   font-size: clamp(15px, 1.25vw, 20px);
   font-weight: 500;
@@ -13093,7 +13098,16 @@ body {
 }
 
 .seriesFeatureSummary {
-  display: none;
+  display: -webkit-box;
+  width: min(100%, 260px);
+  margin: 8px auto 0;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  color: rgba(235, 241, 245, 0.76);
+  font-size: clamp(12px, 0.86vw, 14px);
+  line-height: 1.52;
+  text-align: center;
 }
 
 .seriesFeatureCard:hover,
@@ -14463,7 +14477,7 @@ body {
 
 .shell main .companyPartnerLogoWall {
   border: 1px solid rgba(255, 255, 255, 0.12);
-  background: #ffffff;
+  background: #080d12;
 }
 
 .shell main .companyPartnerLogoTile {

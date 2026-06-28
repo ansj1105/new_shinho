@@ -65,6 +65,8 @@ type SeriesProductData = {
   slug: string;
   nameKo: string;
   nameEn: string;
+  summaryKo: string;
+  summaryEn: string;
   imageUrl: string | null;
   displayOrder: number;
 };
@@ -380,6 +382,26 @@ export function AdminHomeTabs({
                       defaultValue={resolveProductImageUrl(product)}
                       placeholder="/product-placeholder.svg"
                     />
+                    <div className="lumosAdminFormGrid">
+                      <label className="field">
+                        <span>Card Title KO</span>
+                        <input name="nameKo" defaultValue={product.nameKo} />
+                      </label>
+                      <label className="field">
+                        <span>Card Title EN</span>
+                        <input name="nameEn" defaultValue={product.nameEn} />
+                      </label>
+                    </div>
+                    <div className="lumosAdminFormGrid">
+                      <label className="field lumosAdminEditorField">
+                        <span>Card Summary KO</span>
+                        <textarea name="summaryKo" rows={4} defaultValue={product.summaryKo} />
+                      </label>
+                      <label className="field lumosAdminEditorField">
+                        <span>Card Summary EN</span>
+                        <textarea name="summaryEn" rows={4} defaultValue={product.summaryEn} />
+                      </label>
+                    </div>
                     <div className="lumosAdminActionRow">
                       <a
                         href="/asdasddfg/admin/products"

@@ -7,6 +7,9 @@ import { getApplications, getManufacturerLogos, getPageHeroConfig, getProducts, 
 import { getDictionary } from "@/lib/dictionaries";
 import { buildPageMetadata } from "@/lib/seo";
 import type { Locale } from "@/lib/site";
+import { connection } from "next/server";
+
+export const dynamic = "force-dynamic";
 
 export async function generateMetadata({
   params,
@@ -29,6 +32,8 @@ export default async function HomePage({
 }: {
   params: Promise<{ locale: Locale }>;
 }) {
+  await connection();
+
   const { locale } = await params;
   const [config, products, applications, contactHeroConfig, manufacturerLogos] = await Promise.all([
     getSiteConfig(),

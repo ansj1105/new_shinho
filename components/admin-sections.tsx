@@ -91,6 +91,8 @@ export function HomeAdminSection({
     slug: string;
     nameKo: string;
     nameEn: string;
+    summaryKo: string;
+    summaryEn: string;
     imageUrl: string | null;
     displayOrder: number;
   }>;
