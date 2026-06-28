@@ -10089,8 +10089,9 @@ body {
 .navDropdown.isProductsDropdown .navDropdownDepthList,
 .navDropdown.isProductsDropdown .navDropdownSubDepthList {
   position: absolute;
-  top: -12px;
-  left: calc(100% + 12px);
+  top: 0;
+  left: 100%;
+  margin: 0;
   z-index: 30;
   min-width: 260px;
   padding: 12px 0;
@@ -10105,14 +10106,15 @@ body {
   transition: opacity 160ms ease, transform 160ms ease;
 }
 
+.navDropdown.isProductsDropdown .navDropdownSubDepthList {
+  left: 100%;
+  margin-left: 0;
+  transform: translateX(0);
+}
+
 .navDropdown.isProductsDropdown .navDropdownDepthList::before,
 .navDropdown.isProductsDropdown .navDropdownSubDepthList::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: -14px;
-  width: 14px;
+  content: none;
 }
 
 .navDropdown.isProductsDropdown .navDropdownGroup.hasDepth:hover > .navDropdownDepthList,
@@ -10122,6 +10124,23 @@ body {
   opacity: 1;
   pointer-events: auto;
   transform: translateX(0);
+}
+
+.navDropdown.isProductsDropdown .navDropdownGroup.hasDepth:hover > .navDropdownDepthList .navDropdownDepthGroup.hasDepth > .navDropdownSubDepthList,
+.navDropdown.isProductsDropdown .navDropdownGroup.hasDepth:focus-within > .navDropdownDepthList .navDropdownDepthGroup.hasDepth > .navDropdownSubDepthList {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateX(0);
+  left: 100%;
+  margin-left: 0;
+}
+
+.navDropdown.isProductsDropdown .navDropdownGroup.hasDepth:hover > .navDropdownLink.hasDepth,
+.navDropdown.isProductsDropdown .navDropdownGroup.hasDepth:focus-within > .navDropdownLink.hasDepth,
+.navDropdown.isProductsDropdown .navDropdownDepthGroup.hasDepth:hover > .navDropdownDepthLink.hasDepth,
+.navDropdown.isProductsDropdown .navDropdownDepthGroup.hasDepth:focus-within > .navDropdownDepthLink.hasDepth {
+  color: var(--sh-cyan);
+  background: rgba(0, 95, 127, 0.04);
 }
 
 .navDropdown.isProductsDropdown .navDropdownDepthLink,
