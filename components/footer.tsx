@@ -9,7 +9,7 @@ export function Footer({
   productLinks,
 }: {
   locale: Locale;
-  productLinks: Array<{ label: string; href: string }>;
+  productLinks: Array<{ label: string; href: string; children?: Array<{ label: string; href: string }> }>;
 }) {
   const dict = getDictionary(locale);
   const phoneHref = `tel:${dict.footer.phone.replace(/[^\d+]/g, "")}`;

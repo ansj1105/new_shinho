@@ -10,16 +10,18 @@ import type { Locale } from "@/lib/site";
 
 type HeaderProps = {
   locale: Locale;
-  productLinks: Array<{
-    label: string;
-    href: string;
-    children?: Array<{ label: string; href: string }>;
-  }>;
+  productLinks: NavLinkItem[];
+};
+
+type NavLinkItem = {
+  label: string;
+  href: string;
+  children?: NavLinkItem[];
 };
 
 export function Header({ locale, productLinks }: HeaderProps) {
   const dict = getDictionary(locale);
-  const navItems = dict.nav.map((item) =>
+  const navItems: NavLinkItem[] = dict.nav.map((item) =>
     item.href === "/products" ? { ...item, children: productLinks } : item,
   );
   const localeLabel = locale === "ko" ? "\uD55C\uAD6D\uC5B4" : "English";
@@ -29,6 +31,35 @@ export function Header({ locale, productLinks }: HeaderProps) {
   const [openNavHref, setOpenNavHref] = useState<string | null>(null);
   const [suppressNavHover, setSuppressNavHover] = useState(false);
   const pathname = usePathname();
+
+  function renderDropdownItems(items: NavLinkItem[], level = 0) {
+    return items.map((child) => {
+      const hasDepth = Boolean(child.children?.length);
+      const groupClassName = level === 0 ? "navDropdownGroup" : "navDropdownDepthGroup";
+      const linkClassName = level === 0 ? "navDropdownLink" : "navDropdownDepthLink";
+      const listClassName = level === 0 ? "navDropdownDepthList" : "navDropdownSubDepthList";
+
+      return (
+        <div key={child.href} className={`${groupClassName} ${hasDepth ? "hasDepth" : ""}`}>
+          <Link
+            href={`/${locale}${child.href}`}
+            className={`${linkClassName} ${hasDepth ? "hasDepth" : ""}`}
+            onClick={() => {
+              setOpenNavHref(null);
+              setSuppressNavHover(true);
+            }}
+          >
+            {child.label}
+          </Link>
+          {hasDepth ? (
+            <div className={listClassName}>
+              {renderDropdownItems(child.children ?? [], level + 1)}
+            </div>
+          ) : null}
+        </div>
+      );
+    });
+  }
 
   useEffect(() => {
     setOpenNavHref(null);
@@ -97,41 +128,7 @@ export function Header({ locale, productLinks }: HeaderProps) {
                       item.href === "/products" ? "isProductsDropdown" : "isSingleColumnDropdown"
                     }`}
                   >
-                    {item.children.map((child) => {
-                      const hasDepth = "children" in child && Boolean(child.children?.length);
-
-                      return (
-                        <div key={child.href} className={`navDropdownGroup ${hasDepth ? "hasDepth" : ""}`}>
-                          <Link
-                            href={`/${locale}${child.href}`}
-                            className={`navDropdownLink ${hasDepth ? "hasDepth" : ""}`}
-                            onClick={() => {
-                              setOpenNavHref(null);
-                              setSuppressNavHover(true);
-                            }}
-                          >
-                            {child.label}
-                          </Link>
-                          {hasDepth ? (
-                            <div className="navDropdownDepthList">
-                              {child.children?.map((grandChild) => (
-                                <Link
-                                  key={grandChild.href}
-                                  href={`/${locale}${grandChild.href}`}
-                                  className="navDropdownDepthLink"
-                                  onClick={() => {
-                                    setOpenNavHref(null);
-                                    setSuppressNavHover(true);
-                                  }}
-                                >
-                                  {grandChild.label}
-                                </Link>
-                              ))}
-                            </div>
-                          ) : null}
-                        </div>
-                      );
-                    })}
+                    {renderDropdownItems(item.children)}
                   </div>
                 ) : null}
               </div>
@@ -237,14 +234,29 @@ export function Header({ locale, productLinks }: HeaderProps) {
                       {"children" in child && child.children?.length ? (
                         <div className="mobileMenuDepthLinks">
                           {child.children.map((grandChild) => (
-                            <Link
-                              key={grandChild.href}
-                              href={`/${locale}${grandChild.href}`}
-                              className="mobileMenuDepthLink"
-                              onClick={() => setMobileOpen(false)}
-                            >
-                              {grandChild.label}
-                            </Link>
+                            <div key={grandChild.href} className="mobileMenuSubDepthGroup">
+                              <Link
+                                href={`/${locale}${grandChild.href}`}
+                                className="mobileMenuDepthLink"
+                                onClick={() => setMobileOpen(false)}
+                              >
+                                {grandChild.label}
+                              </Link>
+                              {grandChild.children?.length ? (
+                                <div className="mobileMenuSubDepthLinks">
+                                  {grandChild.children.map((greatGrandChild) => (
+                                    <Link
+                                      key={greatGrandChild.href}
+                                      href={`/${locale}${greatGrandChild.href}`}
+                                      className="mobileMenuSubDepthLink"
+                                      onClick={() => setMobileOpen(false)}
+                                    >
+                                      {greatGrandChild.label}
+                                    </Link>
+                                  ))}
+                                </div>
+                              ) : null}
+                            </div>
                           ))}
                         </div>
                       ) : null}
