@@ -10152,6 +10152,11 @@ body {
   min-height: calc(var(--product-dropdown-row-height) * var(--subdepth-row-span, 1));
 }
 
+.navDropdown.isProductsDropdown .navDropdownDepthGroup + .navDropdownDepthGroup,
+.navDropdown.isProductsDropdown .navDropdownSubDepthGroup + .navDropdownSubDepthGroup {
+  border-top: 1px solid rgba(15, 34, 61, 0.08);
+}
+
 .navDropdown.isProductsDropdown .navDropdownSubDepthGroup.isEmpty {
   pointer-events: none;
 }

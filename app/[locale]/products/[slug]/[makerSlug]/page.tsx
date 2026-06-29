@@ -68,7 +68,6 @@ export default async function ProductMakerDetailPage({
   const detail = getProductMakerDetailContent(slug, makerSlug);
   const detailHeadline = detail ? (locale === "ko" ? detail.headlineKo : detail.headlineEn) : maker.name;
   const detailLead = detail ? (locale === "ko" ? detail.leadKo : detail.leadEn) : makerDescription;
-  const detailLabel = detail ? (locale === "ko" ? detail.labelKo : detail.labelEn) : productName;
   const detailReference = detail ? (locale === "ko" ? detail.referenceKo : detail.referenceEn) : null;
   const detailNotes = detail ? (locale === "ko" ? detail.notesKo : detail.notesEn) : [];
   const detailBlocks = detail?.blocks ?? [];
@@ -114,7 +113,6 @@ export default async function ProductMakerDetailPage({
             <Image src={primaryImage} alt={maker.name} fill sizes="(max-width: 900px) 100vw, 520px" priority />
           </div>
           <div className="makerDetailIntroCopy">
-            <span>{detailLabel}</span>
             <h2>{detailHeadline}</h2>
             <p>{detailLead}</p>
             {detailReference ? <em>{detailReference}</em> : null}
@@ -130,7 +128,6 @@ export default async function ProductMakerDetailPage({
 
         <section className="makerDetailProductSection" aria-label={locale === "ko" ? "제품 구성" : "Product lineup"}>
           <div className="makerDetailSectionHead">
-            <span>{locale === "ko" ? "제품 구성" : "Product lineup"}</span>
             <h2>{locale === "ko" ? "제조사 제품 구성과 적용 검토" : "Manufacturer lineup and application review"}</h2>
             <p>
               {locale === "ko"
@@ -154,7 +151,6 @@ export default async function ProductMakerDetailPage({
                               </div>
                             ) : null}
                             <div className="makerDetailCatalogCopy">
-                              <span>{maker.name}</span>
                               <h4>{productItem.name}</h4>
                               <ul>
                                 {productItem.specs.map((spec) => (
@@ -184,7 +180,6 @@ export default async function ProductMakerDetailPage({
 
         <section className="makerDetailSupportBand">
           <div>
-            <span>{locale === "ko" ? "SHINHOTEK SUPPORT" : "SHINHOTEK SUPPORT"}</span>
             <h2>{locale === "ko" ? "문의부터 적용까지 연결" : "From inquiry to implementation"}</h2>
             <p>
               {locale === "ko"

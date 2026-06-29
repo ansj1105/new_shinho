@@ -186,7 +186,6 @@ export default async function ProductsPage({
 
         <nav className="productLineupRail" aria-label={locale === "ko" ? "제품군 바로가기" : "Product lineup"}>
           <div className="productLineupRailHead">
-            <span>PRODUCT LINE UP</span>
             <strong>{locale === "ko" ? "제조 공정별 제품군" : "Product categories by process"}</strong>
           </div>
           <div className="productLineupRailLinks">
